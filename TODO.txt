@@ -1,0 +1,36 @@
+
+/*
+new in gmp version ... 
+
+mpz_clears
+mpz_2fac_ui
+mpz_mfac_uiui
+mpz_primorial_ui
+mpz_inits
+mpz_powm_sec
+mpq_clears
+mpq_inits
+mpf_clears
+mpf_inits
+
+
+...type mp_bitcnt_t
+mpz_cdiv_q_2exp
+mpz_cdiv_r_2exp
+mpz_clrbit
+mpz_combit
+mpz_congruent_2exp_p
+mpz_divisible_2exp_p
+mpz_fdiv_q_2exp
+mpz_fdiv_r_2exp
+mpz_hamdist
+mpz_init2
+mpz_mul_2exp
+mpz_popcount
+mpz_realloc2
+mpz_rrandomb
+mpz_scan0
+mpz_scan1
+mpz_setbit
+
+*/
