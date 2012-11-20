@@ -5,7 +5,7 @@ public class MPZ {
 
 	static {
 		System.loadLibrary("gmpjni");
-		System.out.println("Loaded System.library gmpjni for BigInt !!");
+		System.out.println("Loaded System.library gmpjni");
 	}
 	
 	private SWIGTYPE_p_mpz_ptr ptr;
@@ -45,6 +45,10 @@ public class MPZ {
 //	
 //	public void clears(...);
 
+	public long getPtr() {
+		return ptr != null? SWIGTYPE_p_mpz_ptr.getCPtr(ptr) : 0;
+	}
+	
 	// ------------------------------------------------------------------------
 	
 	private static void checkPositiveArg(long value) {
@@ -59,52 +63,56 @@ public class MPZ {
 		gmp.mpz_set_si(ptr, value);
 	}
 
-	public void abs(MPZ src) {
+	public void set_abs(MPZ src) {
 		gmp.mpz_abs(ptr, src.ptr);
 	}
 	
-	public void add(MPZ left, MPZ right) {
+	public void set_add(MPZ left, MPZ right) {
 		gmp.mpz_add(ptr, left.ptr, right.ptr);
 	}
 	
-	public void add_ui(MPZ left, long right) {
+	public void set_add_ui(MPZ left, long right) {
 		checkPositiveArg(right);
 		gmp.mpz_add_ui(ptr, left.ptr, right);
 	}
 	
-	public void addmul(MPZ left, MPZ right) {
+	public void set_addmul(MPZ left, MPZ right) {
 		gmp.mpz_addmul(ptr, left.ptr, right.ptr);
 	}
 	
-	public void addmul_ui(MPZ left, long right) {
+	public void set_addmul_ui(MPZ left, long right) {
 		checkPositiveArg(right);
 		gmp.mpz_addmul_ui(ptr, left.ptr, right);
 	}
 	
-	public void and(MPZ left, MPZ right) {
+	public void set_and(MPZ left, MPZ right) {
 		gmp.mpz_and(ptr, left.ptr, right.ptr);
 	}
 	
-// TODO??	public void array_init(mp_size_t, mp_size_t);
-	
-	public void bin_ui(MPZ left, long right) {
-		checkPositiveArg(right);
-		gmp.mpz_bin_ui(ptr, left.ptr, right);
+	/**
+	 * set this to the binomial coefficient (n k)
+	 * Negative values of n are supported by mpz_bin_ui, using the identity (-n k) = -1^k (n+k-1 k) 
+	 * @param n
+	 * @param k
+	 */
+	public void set_bin_ui(MPZ n, long k) {
+		checkPositiveArg(k);
+		gmp.mpz_bin_ui(ptr, n.ptr, k);
 	}
 	
-	public void bin_uiui(long left, long right) {
-		checkPositiveArg(left);
-		checkPositiveArg(right);
-		gmp.mpz_bin_uiui(ptr, left, right);
+	public void set_bin_uiui(long n, long k) {
+		checkPositiveArg(n);
+		checkPositiveArg(k);
+		gmp.mpz_bin_uiui(ptr, n, k);
 	}
 	
-	public void cdiv_q(MPZ n, MPZ d) {
+	public void set_cdiv_q(MPZ n, MPZ d) {
 		gmp.mpz_cdiv_q(ptr, n.ptr, d.ptr);
 	}
 	
 	// public void cdiv_q_2exp(MPZ left, mp_bitcnt_t);
 	
-	public long cdiv_q_ui(MPZ n, long d) {
+	public long set_cdiv_q_ui(MPZ n, long d) {
 		checkPositiveArg(d);
 		return gmp.mpz_cdiv_q_ui(ptr, n.ptr, d);
 	}
@@ -113,12 +121,12 @@ public class MPZ {
 		gmp.mpz_cdiv_qr(q.ptr, r.ptr, n.ptr, d.ptr);
 	}
 	
-	public long mpz_cdiv_qr_ui(MPZ q, MPZ r, MPZ n, long d) {
+	public static long cdiv_qr_ui(MPZ q, MPZ r, MPZ n, long d) {
 		checkPositiveArg(d);
 		return gmp.mpz_cdiv_qr_ui(q.ptr, r.ptr, n.ptr, d);
 	}
 	
-	public void cdiv_r(MPZ n, MPZ d) {
+	public void set_cdiv_r(MPZ n, MPZ d) {
 		gmp.mpz_cdiv_r(ptr, n.ptr, d.ptr);
 	} 
 	
@@ -174,42 +182,42 @@ public class MPZ {
 	
 	// public void combit(mp_bitcnt_t);
 	
-	public boolean congruent_p(MPZ c, MPZ d) {
+	public boolean isCongruent_p(MPZ c, MPZ d) {
 		return 0 != gmp.mpz_congruent_p(ptr, c.ptr, d.ptr);
 	}
 	
-	// int congruent_2exp_p (MPZ left, mpz_srcptr, mp_bitcnt_t) {
+	// boolean isCongruent_2exp_p (MPZ left, mpz_srcptr, mp_bitcnt_t) {
 	// }
 	
-	public boolean mpz_congruent_ui_p(long c, long d) {
+	public boolean isCongruent_ui_p(long c, long d) {
 		return 0 != gmp.mpz_congruent_ui_p(ptr, c, d);
 	}
 	
-	public void divexact(MPZ n, MPZ d) {
+	public void setDivexact(MPZ n, MPZ d) {
 		gmp.mpz_divexact(ptr, n.ptr, d.ptr);
 	}
 	
-	public void divexact_ui(MPZ n, long d) {
+	public void setDivexact_ui(MPZ n, long d) {
 		checkPositiveArg(d);
 		gmp.mpz_divexact_ui(ptr, n.ptr, d);
 	}
 	
-	public boolean divisible_p(MPZ d) {
+	public boolean isDivisible_p(MPZ d) {
 		return 0 != gmp.mpz_divisible_p(ptr, d.ptr);
 	}
 	
-	public boolean divisible_ui_p(long d) {
+	public boolean isDivisible_ui_p(long d) {
 		checkPositiveArg(d);
 		return 0 != gmp.mpz_divisible_ui_p(ptr, d);
 	}
 	
-	// int mpz_divisible_2exp_p (MPZ left, mp_bitcnt_t);
+	// boolean isDivisible_2exp_p (MPZ left, mp_bitcnt_t);
 	
 	// TODO??  public void dump (MPZ src);
 	
 	// TODO?? void *mpz_export (void *, size_t *, int, size_t, int, size_t, MPZ src);
 	
-	public void fac_ui(long n) {
+	public void set_fac_ui(long n) {
 		checkPositiveArg(n);
 		gmp.mpz_fac_ui(ptr, n);
 	}
@@ -220,7 +228,7 @@ public class MPZ {
 	
 	// public void primorial_ui(unsigned long int);
 	
-	public void fdiv_q(MPZ n, MPZ d) {
+	public void set_fdiv_q(MPZ n, MPZ d) {
 		gmp.mpz_fdiv_q(ptr, n.ptr, d.ptr);
 	}
 	
@@ -231,13 +239,13 @@ public class MPZ {
 		return gmp.mpz_fdiv_q_ui(ptr, n.ptr, d);
 	}
 	
-	public void get_fdiv_qr(MPZ q, MPZ r, MPZ d) {
-		gmp.mpz_fdiv_qr(q.ptr, r.ptr, this.ptr, d.ptr);
+	public void set_fdiv_qr(MPZ r, MPZ n, MPZ d) {
+		gmp.mpz_fdiv_qr(ptr, r.ptr, n.ptr, d.ptr);
 	}
 	
-	public long get_fdiv_qr_ui(MPZ q, MPZ r, long d) {
+	public long set_fdiv_qr_ui(MPZ r, MPZ n, long d) {
 		checkPositiveArg(d);
-		return gmp.mpz_fdiv_qr_ui(q.ptr, r.ptr, this.ptr, d);
+		return gmp.mpz_fdiv_qr_ui(ptr, r.ptr, n.ptr, d);
 	}
 	
 	public void set_fdiv_r(MPZ n, MPZ d) {
@@ -294,7 +302,10 @@ public class MPZ {
 		gmp.mpz_gcd(ptr, left.ptr, right.ptr);
 	}
 	
-	public long set_gcd_ui(MPZ left, long right) { // TOCHECK return??
+	/** 
+	 * @return gcd as native long... also set as MPZ result
+	 */
+	public long set_gcd_ui(MPZ left, long right) { // return is redun dnat with set value
 		checkPositiveArg(right);
 		return gmp.mpz_gcd_ui(ptr, left.ptr, right);
 	}
@@ -448,7 +459,7 @@ op2 is zero.
 	
 	// public void mul_2exp(MPZ left, int exp);
 	
-	public void mul_si(MPZ left, int right) {
+	public void set_mul_si(MPZ left, int right) {
 		gmp.mpz_mul_si(ptr, left.ptr, right);
 	}
 
@@ -501,7 +512,7 @@ op2 is zero.
 	
 	// public void powm_sec(MPZ left, MPZ left, MPZ right);
 	
-	public void powm_ui(MPZ base, long exp, MPZ mod) {
+	public void set_powm_ui(MPZ base, long exp, MPZ mod) {
 		checkPositiveArg(exp);
 		gmp.mpz_powm_ui(ptr, base.ptr, exp, mod.ptr);
 	}
@@ -521,7 +532,7 @@ op2 is zero.
 	 *   Numbers which fail are known to be composite but those which pass might be prime or might be composite. 
 	 *   Only a few composites pass, hence those which pass are considered probably prime.
 	 */
-	public int test_probab_prime_p(int reps) {
+	public int is_probab_prime_p(int reps) {
 		return gmp.mpz_probab_prime_p(ptr, reps);
 	}
 	
@@ -627,45 +638,86 @@ op2 is zero.
 	 * like set_sqrt with remainder
 	 * @param remainder  Set to the remainder (src − this^2), which will be zero if src is a perfect square.
 	 */
-	public void sqrtrem(MPZ remainder, MPZ src) {
+	public void set_sqrtrem(MPZ remainder, MPZ src) {
 		if (this == remainder) throw new IllegalArgumentException();
 		gmp.mpz_sqrtrem(ptr, remainder.ptr, src.ptr);
 	}
 	
-	/*
-	public void sub(MPZ left, MPZ right);
+	public void set_sub(MPZ left, MPZ right) {
+		gmp.mpz_sub(ptr, left.ptr, right.ptr);
+	}
 	
-	public void sub_ui(MPZ left, unsigned long int);
+	public void set_sub_ui(MPZ left, long right) {
+		checkPositiveArg(right);
+		gmp.mpz_sub_ui(ptr, left.ptr, right);
+	}
 	
-	public void ui_sub(unsigned long int, MPZ src);
+	public void set_ui_sub(long left, MPZ right) {
+		checkPositiveArg(left);
+		gmp.mpz_ui_sub(ptr, left, right.ptr);
+	}
 	
-	public void submul(MPZ left, MPZ right);
+	public void set_submul(MPZ left, MPZ right) {
+		gmp.mpz_submul(ptr, left.ptr, right.ptr);
+	}
 	
-	public void submul_ui(MPZ left, unsigned long int);
+	public void set_submul_ui(MPZ left, long right) {
+		checkPositiveArg(right);
+		gmp.mpz_submul_ui(ptr, left.ptr, right);
+	}
 	
-	public void swap(mpz_ptr);
+	public void set_swap(MPZ right) {
+		gmp.mpz_swap(ptr, right.ptr);
+	}
 	
-	public long tdiv_ui (MPZ left, unsigned long int);
+	public long get_tdiv_ui(long d) {
+		checkPositiveArg(d);
+		return gmp.mpz_tdiv_ui(ptr, d);
+	}
 	
-	public void tdiv_q(MPZ left, MPZ right);
+	public void set_tdiv_q(MPZ n, MPZ d) {
+		gmp.mpz_tdiv_q(ptr, n.ptr, d.ptr);
+	}
 	
 	// public void tdiv_q_2exp(MPZ left, mp_bitcnt_t);
 	
-	public long tdiv_q_ui(MPZ left, unsigned long int);
+	/** TOCHECK set q, return remainder ?? */
+	public long set_tdiv_q_ui(MPZ n, long d) { 
+		checkPositiveArg(d);
+		return gmp.mpz_tdiv_q_ui(ptr, n.ptr, d);
+	}
 	
-	public void tdiv_qr(mpz_ptr, MPZ left, MPZ right);
+	public void set_tdiv_qr(MPZ r, MPZ n, MPZ d) {
+		gmp.mpz_tdiv_qr(ptr, r.ptr, n.ptr, d.ptr);
+	}
 	
-	public long tdiv_qr_ui(mpz_ptr, mpz_srcptr, unsigned long int);
+	/**
+	 * set this to div quotient of n/d
+	 * @param r set remainder of n/d  
+	 */
+	public long set_tdiv_qr_ui(MPZ r, MPZ n, long d) {
+		checkPositiveArg(d);
+		return gmp.mpz_tdiv_qr_ui(ptr, r.ptr, n.ptr, d);
+	}
 	
-	public void tdiv_r(MPZ left, MPZ right);
+	public void set_tdiv_r(MPZ n, MPZ d) {
+		gmp.mpz_tdiv_r(ptr, n.ptr, d.ptr);
+	}
 	
 	// public void tdiv_r_2exp(MPZ left, mp_bitcnt_t);
 	
-	public long tdiv_r_ui(MPZ left, unsigned long int);
+	public long get_tdiv_r_ui(MPZ n, long d) {
+		checkPositiveArg(d);
+		return gmp.mpz_tdiv_r_ui(ptr, n.ptr, d);
+	}
 	
 	// int mpz_tstbit (MPZ left, mp_bitcnt_t);
 	
-	public void ui_pow_ui(unsigned long int, unsigned long int);
+	public void set_ui_pow_ui(long n, long exp) {
+		checkPositiveArg(n);
+		checkPositiveArg(exp);
+		gmp.mpz_ui_pow_ui(ptr, n, exp);
+	}
 	
 	// public void urandomb(gmp_randstate_t, mp_bitcnt_t);
 	
@@ -675,7 +727,6 @@ op2 is zero.
 		gmp.mpz_xor(ptr, op1.ptr, op2.ptr);
 	}
 	
-	*/
 	
 
 }
