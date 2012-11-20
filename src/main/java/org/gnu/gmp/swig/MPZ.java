@@ -1,6 +1,9 @@
 package org.gnu.gmp.swig;
 
-
+/**
+ * Java JNI wrapper for GNU "mpz_t"
+ * i.e. similar to java.util.BigInteger, but FAST, native, and mutable...  
+ */
 public class MPZ {
 
 	static {
@@ -47,6 +50,10 @@ public class MPZ {
 
 	public long getPtr() {
 		return ptr != null? SWIGTYPE_p_mpz_ptr.getCPtr(ptr) : 0;
+	}
+	
+	/*package protected*/ SWIGTYPE_p_mpz_ptr getSwigPtr() {
+		return ptr;
 	}
 	
 	// ------------------------------------------------------------------------

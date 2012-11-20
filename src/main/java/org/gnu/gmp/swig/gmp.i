@@ -14,6 +14,8 @@ typedef unsigned long int	mp_size_t;
 typedef unsigned long int	mp_bitcnt_t;
 
 typedef mpz_ptr mpz_srcptr;
+typedef mpq_ptr mpq_srcptr;
+typedef mpf_ptr mpf_srcptr;
 
 
 
@@ -22,6 +24,22 @@ typedef mpz_ptr mpz_srcptr;
 
 %typemap(in) mpz_srcptr %{ $1 = (mpz_srcptr)(void*)$input; %}
 %typemap(out) mpz_srcptr * %{  $result = (jlong)(void*)$1; %} 
+
+
+%typemap(in) mpq_ptr %{ $1 = (mpq_ptr)(void*)$input; %}
+%typemap(out) mpq_ptr * %{  $result = (jlong)(void*)$1; %} 
+
+%typemap(in) mpq_srcptr %{ $1 = (mpq_srcptr)(void*)$input; %}
+%typemap(out) mpq_srcptr * %{  $result = (jlong)(void*)$1; %} 
+
+
+
+%typemap(in) mpf_ptr %{ $1 = (mpf_ptr)(void*)$input; %}
+%typemap(out) mpf_ptr * %{  $result = (jlong)(void*)$1; %} 
+
+%typemap(in) mpf_srcptr %{ $1 = (mpf_srcptr)(void*)$input; %}
+%typemap(out) mpf_srcptr * %{  $result = (jlong)(void*)$1; %} 
+
 
 
 %{
@@ -40,6 +58,33 @@ void mpz_clear_free(jlong addr) {
 	free(ptr);
 }
 
+jlong mpq_alloc_init() {
+	mpq_ptr addr = (mpq_ptr) malloc(sizeof(mpq_t));
+	jlong ret = (jlong) ((void*) addr);
+	mpq_init(addr);
+	return ret;
+}
+
+void mpq_clear_free(jlong addr) {
+	mpq_ptr ptr = (mpq_ptr)addr;
+	mpq_clear(ptr);
+	free(ptr);
+}
+
+
+jlong mpf_alloc_init() {
+	mpf_ptr addr = (mpf_ptr) malloc(sizeof(mpf_t));
+	jlong ret = (jlong) ((void*) addr);
+	mpf_init(addr);
+	return ret;
+}
+
+void mpf_clear_free(jlong addr) {
+	mpf_ptr ptr = (mpf_ptr)addr;
+	mpf_clear(ptr);
+	free(ptr);
+}
+
 %}
 
 
@@ -47,6 +92,11 @@ void mpz_clear_free(jlong addr) {
 jlong mpz_alloc_init();
 void mpz_clear_free(jlong);
 
+jlong mpq_alloc_init();
+void mpq_clear_free(jlong);
+
+jlong mpf_alloc_init();
+void mpf_clear_free(jlong);
 
 
 

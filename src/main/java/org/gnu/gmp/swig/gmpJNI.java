@@ -11,9 +11,12 @@ package org.gnu.gmp.swig;
 class gmpJNI {
   public final static native long mpz_alloc_init();
   public final static native void mpz_clear_free(long jarg1);
+  public final static native long mpq_alloc_init();
+  public final static native void mpq_clear_free(long jarg1);
+  public final static native long mpf_alloc_init();
+  public final static native void mpf_clear_free(long jarg1);
   public final static native void mpz_abs(long jarg1, long jarg2);
   public final static native void mpz_add(long jarg1, long jarg2, long jarg3);
-  public final static native void mpz_add_si(long jarg1, long jarg2, int jarg3);
   public final static native void mpz_add_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_addmul(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_addmul_ui(long jarg1, long jarg2, long jarg3);

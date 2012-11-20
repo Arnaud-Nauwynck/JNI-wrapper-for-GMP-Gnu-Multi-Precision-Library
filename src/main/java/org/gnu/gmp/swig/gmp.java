@@ -17,16 +17,28 @@ public class gmp {
     gmpJNI.mpz_clear_free(arg0);
   }
 
+  public static long mpq_alloc_init() {
+    return gmpJNI.mpq_alloc_init();
+  }
+
+  public static void mpq_clear_free(long arg0) {
+    gmpJNI.mpq_clear_free(arg0);
+  }
+
+  public static long mpf_alloc_init() {
+    return gmpJNI.mpf_alloc_init();
+  }
+
+  public static void mpf_clear_free(long arg0) {
+    gmpJNI.mpf_clear_free(arg0);
+  }
+
   public static void mpz_abs(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpz_ptr arg1) {
     gmpJNI.mpz_abs(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1));
   }
 
   public static void mpz_add(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpz_ptr arg1, SWIGTYPE_p_mpz_ptr arg2) {
     gmpJNI.mpz_add(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1), SWIGTYPE_p_mpz_ptr.getCPtr(arg2));
-  }
-
-  public static void mpz_add_si(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpz_ptr arg1, int arg2) {
-    gmpJNI.mpz_add_si(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1), arg2);
   }
 
   public static void mpz_add_ui(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpz_ptr arg1, long arg2) {
@@ -418,12 +430,12 @@ public class gmp {
     gmpJNI.mpz_set_d(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), arg1);
   }
 
-  public static void mpz_set_f(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpz_set_f(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpz_set_f(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpz_set_f(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static void mpz_set_q(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpz_set_q(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpz_set_q(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpz_set_q(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
   public static void mpz_set_si(SWIGTYPE_p_mpz_ptr arg0, int arg1) {
@@ -514,12 +526,12 @@ public class gmp {
     gmpJNI.mpz_xor(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1), SWIGTYPE_p_mpz_ptr.getCPtr(arg2));
   }
 
-  public static void mpq_abs(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpq_abs(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpq_abs(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpq_abs(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static void mpq_add(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1, SWIGTYPE_p_mpq_srcptr arg2) {
-    gmpJNI.mpq_add(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1), SWIGTYPE_p_mpq_srcptr.getCPtr(arg2));
+  public static void mpq_add(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1, SWIGTYPE_p_mpq_ptr arg2) {
+    gmpJNI.mpq_add(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1), SWIGTYPE_p_mpq_ptr.getCPtr(arg2));
   }
 
   public static void mpq_canonicalize(SWIGTYPE_p_mpq_ptr arg0) {
@@ -530,40 +542,40 @@ public class gmp {
     gmpJNI.mpq_clear(SWIGTYPE_p_mpq_ptr.getCPtr(arg0));
   }
 
-  public static int mpq_cmp(SWIGTYPE_p_mpq_srcptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    return gmpJNI.mpq_cmp(SWIGTYPE_p_mpq_srcptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static int mpq_cmp(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    return gmpJNI.mpq_cmp(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static int _mpq_cmp_si(SWIGTYPE_p_mpq_srcptr arg0, int arg1, long arg2) {
-    return gmpJNI._mpq_cmp_si(SWIGTYPE_p_mpq_srcptr.getCPtr(arg0), arg1, arg2);
+  public static int _mpq_cmp_si(SWIGTYPE_p_mpq_ptr arg0, int arg1, long arg2) {
+    return gmpJNI._mpq_cmp_si(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), arg1, arg2);
   }
 
-  public static int _mpq_cmp_ui(SWIGTYPE_p_mpq_srcptr arg0, long arg1, long arg2) {
-    return gmpJNI._mpq_cmp_ui(SWIGTYPE_p_mpq_srcptr.getCPtr(arg0), arg1, arg2);
+  public static int _mpq_cmp_ui(SWIGTYPE_p_mpq_ptr arg0, long arg1, long arg2) {
+    return gmpJNI._mpq_cmp_ui(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), arg1, arg2);
   }
 
-  public static void mpq_div(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1, SWIGTYPE_p_mpq_srcptr arg2) {
-    gmpJNI.mpq_div(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1), SWIGTYPE_p_mpq_srcptr.getCPtr(arg2));
+  public static void mpq_div(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1, SWIGTYPE_p_mpq_ptr arg2) {
+    gmpJNI.mpq_div(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1), SWIGTYPE_p_mpq_ptr.getCPtr(arg2));
   }
 
-  public static int mpq_equal(SWIGTYPE_p_mpq_srcptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    return gmpJNI.mpq_equal(SWIGTYPE_p_mpq_srcptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static int mpq_equal(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    return gmpJNI.mpq_equal(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static void mpq_get_num(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpq_get_num(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpq_get_num(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpq_get_num(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static void mpq_get_den(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpq_get_den(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpq_get_den(SWIGTYPE_p_mpz_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpq_get_den(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static double mpq_get_d(SWIGTYPE_p_mpq_srcptr arg0) {
-    return gmpJNI.mpq_get_d(SWIGTYPE_p_mpq_srcptr.getCPtr(arg0));
+  public static double mpq_get_d(SWIGTYPE_p_mpq_ptr arg0) {
+    return gmpJNI.mpq_get_d(SWIGTYPE_p_mpq_ptr.getCPtr(arg0));
   }
 
-  public static String mpq_get_str(String arg0, int arg1, SWIGTYPE_p_mpq_srcptr arg2) {
-    return gmpJNI.mpq_get_str(arg0, arg1, SWIGTYPE_p_mpq_srcptr.getCPtr(arg2));
+  public static String mpq_get_str(String arg0, int arg1, SWIGTYPE_p_mpq_ptr arg2) {
+    return gmpJNI.mpq_get_str(arg0, arg1, SWIGTYPE_p_mpq_ptr.getCPtr(arg2));
   }
 
   public static void mpq_init(SWIGTYPE_p_mpq_ptr arg0) {
@@ -574,24 +586,24 @@ public class gmp {
     return gmpJNI.mpq_inp_str(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_FILE.getCPtr(arg1), arg2);
   }
 
-  public static void mpq_inv(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpq_inv(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpq_inv(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpq_inv(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static void mpq_mul(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1, SWIGTYPE_p_mpq_srcptr arg2) {
-    gmpJNI.mpq_mul(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1), SWIGTYPE_p_mpq_srcptr.getCPtr(arg2));
+  public static void mpq_mul(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1, SWIGTYPE_p_mpq_ptr arg2) {
+    gmpJNI.mpq_mul(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1), SWIGTYPE_p_mpq_ptr.getCPtr(arg2));
   }
 
-  public static void mpq_neg(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpq_neg(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpq_neg(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpq_neg(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static long mpq_out_str(SWIGTYPE_p_FILE arg0, int arg1, SWIGTYPE_p_mpq_srcptr arg2) {
-    return gmpJNI.mpq_out_str(SWIGTYPE_p_FILE.getCPtr(arg0), arg1, SWIGTYPE_p_mpq_srcptr.getCPtr(arg2));
+  public static long mpq_out_str(SWIGTYPE_p_FILE arg0, int arg1, SWIGTYPE_p_mpq_ptr arg2) {
+    return gmpJNI.mpq_out_str(SWIGTYPE_p_FILE.getCPtr(arg0), arg1, SWIGTYPE_p_mpq_ptr.getCPtr(arg2));
   }
 
-  public static void mpq_set(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpq_set(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpq_set(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpq_set(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
   public static void mpq_set_d(SWIGTYPE_p_mpq_ptr arg0, double arg1) {
@@ -602,8 +614,8 @@ public class gmp {
     gmpJNI.mpq_set_den(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1));
   }
 
-  public static void mpq_set_f(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpq_set_f(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpq_set_f(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpq_set_f(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
   public static void mpq_set_num(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpz_ptr arg1) {
@@ -626,116 +638,116 @@ public class gmp {
     gmpJNI.mpq_set_z(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1));
   }
 
-  public static void mpq_sub(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1, SWIGTYPE_p_mpq_srcptr arg2) {
-    gmpJNI.mpq_sub(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1), SWIGTYPE_p_mpq_srcptr.getCPtr(arg2));
+  public static void mpq_sub(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1, SWIGTYPE_p_mpq_ptr arg2) {
+    gmpJNI.mpq_sub(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1), SWIGTYPE_p_mpq_ptr.getCPtr(arg2));
   }
 
   public static void mpq_swap(SWIGTYPE_p_mpq_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
     gmpJNI.mpq_swap(SWIGTYPE_p_mpq_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
-  public static void mpf_abs(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_abs(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_abs(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_abs(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static void mpf_add(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_add(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_add(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_add(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
-  public static void mpf_add_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, long arg2) {
-    gmpJNI.mpf_add_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), arg2);
+  public static void mpf_add_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, long arg2) {
+    gmpJNI.mpf_add_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), arg2);
   }
 
-  public static void mpf_ceil(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_ceil(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_ceil(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_ceil(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
   public static void mpf_clear(SWIGTYPE_p_mpf_ptr arg0) {
     gmpJNI.mpf_clear(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_cmp(SWIGTYPE_p_mpf_srcptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    return gmpJNI.mpf_cmp(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static int mpf_cmp(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    return gmpJNI.mpf_cmp(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static int mpf_cmp_d(SWIGTYPE_p_mpf_srcptr arg0, double arg1) {
-    return gmpJNI.mpf_cmp_d(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0), arg1);
+  public static int mpf_cmp_d(SWIGTYPE_p_mpf_ptr arg0, double arg1) {
+    return gmpJNI.mpf_cmp_d(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1);
   }
 
-  public static int mpf_cmp_si(SWIGTYPE_p_mpf_srcptr arg0, int arg1) {
-    return gmpJNI.mpf_cmp_si(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0), arg1);
+  public static int mpf_cmp_si(SWIGTYPE_p_mpf_ptr arg0, int arg1) {
+    return gmpJNI.mpf_cmp_si(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1);
   }
 
-  public static int mpf_cmp_ui(SWIGTYPE_p_mpf_srcptr arg0, long arg1) {
-    return gmpJNI.mpf_cmp_ui(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0), arg1);
+  public static int mpf_cmp_ui(SWIGTYPE_p_mpf_ptr arg0, long arg1) {
+    return gmpJNI.mpf_cmp_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1);
   }
 
-  public static void mpf_div(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_div(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_div(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_div(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
-  public static void mpf_div_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, long arg2) {
-    gmpJNI.mpf_div_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), arg2);
+  public static void mpf_div_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, long arg2) {
+    gmpJNI.mpf_div_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), arg2);
   }
 
-  public static void mpf_dump(SWIGTYPE_p_mpf_srcptr arg0) {
-    gmpJNI.mpf_dump(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static void mpf_dump(SWIGTYPE_p_mpf_ptr arg0) {
+    gmpJNI.mpf_dump(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_fits_sint_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_fits_sint_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_fits_sint_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_fits_sint_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_fits_slong_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_fits_slong_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_fits_slong_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_fits_slong_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_fits_sshort_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_fits_sshort_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_fits_sshort_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_fits_sshort_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_fits_uint_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_fits_uint_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_fits_uint_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_fits_uint_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_fits_ulong_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_fits_ulong_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_fits_ulong_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_fits_ulong_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static int mpf_fits_ushort_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_fits_ushort_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_fits_ushort_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_fits_ushort_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static void mpf_floor(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_floor(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_floor(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_floor(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static double mpf_get_d(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_get_d(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static double mpf_get_d(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_get_d(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static double mpf_get_d_2exp(SWIGTYPE_p_long arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    return gmpJNI.mpf_get_d_2exp(SWIGTYPE_p_long.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static double mpf_get_d_2exp(SWIGTYPE_p_long arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    return gmpJNI.mpf_get_d_2exp(SWIGTYPE_p_long.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static int mpf_get_si(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_get_si(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_get_si(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_get_si(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static String mpf_get_str(String arg0, SWIGTYPE_p_mp_exp_t arg1, int arg2, long arg3, SWIGTYPE_p_mpf_srcptr arg4) {
-    return gmpJNI.mpf_get_str(arg0, SWIGTYPE_p_mp_exp_t.getCPtr(arg1), arg2, arg3, SWIGTYPE_p_mpf_srcptr.getCPtr(arg4));
+  public static String mpf_get_str(String arg0, SWIGTYPE_p_mp_exp_t arg1, int arg2, long arg3, SWIGTYPE_p_mpf_ptr arg4) {
+    return gmpJNI.mpf_get_str(arg0, SWIGTYPE_p_mp_exp_t.getCPtr(arg1), arg2, arg3, SWIGTYPE_p_mpf_ptr.getCPtr(arg4));
   }
 
-  public static long mpf_get_ui(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_get_ui(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static long mpf_get_ui(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_get_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
   public static void mpf_init(SWIGTYPE_p_mpf_ptr arg0) {
     gmpJNI.mpf_init(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static void mpf_init_set(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_init_set(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_init_set(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_init_set(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
   public static void mpf_init_set_d(SWIGTYPE_p_mpf_ptr arg0, double arg1) {
@@ -758,48 +770,48 @@ public class gmp {
     return gmpJNI.mpf_inp_str(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_FILE.getCPtr(arg1), arg2);
   }
 
-  public static int mpf_integer_p(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_integer_p(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static int mpf_integer_p(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_integer_p(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static void mpf_mul(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_mul(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_mul(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_mul(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
-  public static void mpf_mul_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, long arg2) {
-    gmpJNI.mpf_mul_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), arg2);
+  public static void mpf_mul_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, long arg2) {
+    gmpJNI.mpf_mul_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), arg2);
   }
 
-  public static void mpf_neg(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_neg(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_neg(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_neg(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static long mpf_out_str(SWIGTYPE_p_FILE arg0, int arg1, long arg2, SWIGTYPE_p_mpf_srcptr arg3) {
-    return gmpJNI.mpf_out_str(SWIGTYPE_p_FILE.getCPtr(arg0), arg1, arg2, SWIGTYPE_p_mpf_srcptr.getCPtr(arg3));
+  public static long mpf_out_str(SWIGTYPE_p_FILE arg0, int arg1, long arg2, SWIGTYPE_p_mpf_ptr arg3) {
+    return gmpJNI.mpf_out_str(SWIGTYPE_p_FILE.getCPtr(arg0), arg1, arg2, SWIGTYPE_p_mpf_ptr.getCPtr(arg3));
   }
 
-  public static void mpf_pow_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, long arg2) {
-    gmpJNI.mpf_pow_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), arg2);
+  public static void mpf_pow_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, long arg2) {
+    gmpJNI.mpf_pow_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), arg2);
   }
 
   public static void mpf_random2(SWIGTYPE_p_mpf_ptr arg0, long arg1, SWIGTYPE_p_mp_exp_t arg2) {
     gmpJNI.mpf_random2(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, SWIGTYPE_p_mp_exp_t.getCPtr(arg2));
   }
 
-  public static void mpf_reldiff(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_reldiff(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_reldiff(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_reldiff(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
-  public static void mpf_set(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_set(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_set(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_set(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
   public static void mpf_set_d(SWIGTYPE_p_mpf_ptr arg0, double arg1) {
     gmpJNI.mpf_set_d(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1);
   }
 
-  public static void mpf_set_q(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpq_srcptr arg1) {
-    gmpJNI.mpf_set_q(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_srcptr.getCPtr(arg1));
+  public static void mpf_set_q(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpq_ptr arg1) {
+    gmpJNI.mpf_set_q(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpq_ptr.getCPtr(arg1));
   }
 
   public static void mpf_set_si(SWIGTYPE_p_mpf_ptr arg0, int arg1) {
@@ -818,40 +830,40 @@ public class gmp {
     gmpJNI.mpf_set_z(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1));
   }
 
-  public static long mpf_size(SWIGTYPE_p_mpf_srcptr arg0) {
-    return gmpJNI.mpf_size(SWIGTYPE_p_mpf_srcptr.getCPtr(arg0));
+  public static long mpf_size(SWIGTYPE_p_mpf_ptr arg0) {
+    return gmpJNI.mpf_size(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static void mpf_sqrt(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_sqrt(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_sqrt(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_sqrt(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
   public static void mpf_sqrt_ui(SWIGTYPE_p_mpf_ptr arg0, long arg1) {
     gmpJNI.mpf_sqrt_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1);
   }
 
-  public static void mpf_sub(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_sub(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_sub(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_sub(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
-  public static void mpf_sub_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1, long arg2) {
-    gmpJNI.mpf_sub_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1), arg2);
+  public static void mpf_sub_ui(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, long arg2) {
+    gmpJNI.mpf_sub_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), arg2);
   }
 
   public static void mpf_swap(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
     gmpJNI.mpf_swap(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static void mpf_trunc(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_srcptr arg1) {
-    gmpJNI.mpf_trunc(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_srcptr.getCPtr(arg1));
+  public static void mpf_trunc(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1) {
+    gmpJNI.mpf_trunc(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
-  public static void mpf_ui_div(SWIGTYPE_p_mpf_ptr arg0, long arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_ui_div(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_ui_div(SWIGTYPE_p_mpf_ptr arg0, long arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_ui_div(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
-  public static void mpf_ui_sub(SWIGTYPE_p_mpf_ptr arg0, long arg1, SWIGTYPE_p_mpf_srcptr arg2) {
-    gmpJNI.mpf_ui_sub(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, SWIGTYPE_p_mpf_srcptr.getCPtr(arg2));
+  public static void mpf_ui_sub(SWIGTYPE_p_mpf_ptr arg0, long arg1, SWIGTYPE_p_mpf_ptr arg2) {
+    gmpJNI.mpf_ui_sub(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, SWIGTYPE_p_mpf_ptr.getCPtr(arg2));
   }
 
 }

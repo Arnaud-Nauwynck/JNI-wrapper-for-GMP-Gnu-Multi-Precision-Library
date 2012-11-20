@@ -192,28 +192,45 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 typedef unsigned long int	mp_bitcnt_t;
 
 
-/* ADD C Code for alloc / free */
+/* C Code for alloc / free, called in corresponding jni swig wrapper */
 
 jlong mpz_alloc_init() {
 	mpz_ptr addr = (mpz_ptr) malloc(sizeof(mpz_t));
-	
 	jlong ret = (jlong) ((void*) addr);
-	// printf("mpz_alloc+mpz_init %ld\n", (long int)ret, (int)alloc_size, (int)checksize);
-	// fflush(stdout);
-	
 	mpz_init(addr);
-	
 	return ret;
 }
 
 void mpz_clear_free(jlong addr) {
 	mpz_ptr ptr = (mpz_ptr)addr;
-	
-	// printf("mpz_clear+mpz_free %ld\n", (long int) addr);
-	// fflush(stdout);
-	
 	mpz_clear(ptr);
-	
+	free(ptr);
+}
+
+jlong mpq_alloc_init() {
+	mpq_ptr addr = (mpq_ptr) malloc(sizeof(mpq_t));
+	jlong ret = (jlong) ((void*) addr);
+	mpq_init(addr);
+	return ret;
+}
+
+void mpq_clear_free(jlong addr) {
+	mpq_ptr ptr = (mpq_ptr)addr;
+	mpq_clear(ptr);
+	free(ptr);
+}
+
+
+jlong mpf_alloc_init() {
+	mpf_ptr addr = (mpf_ptr) malloc(sizeof(mpf_t));
+	jlong ret = (jlong) ((void*) addr);
+	mpf_init(addr);
+	return ret;
+}
+
+void mpf_clear_free(jlong addr) {
+	mpf_ptr ptr = (mpf_ptr)addr;
+	mpf_clear(ptr);
 	free(ptr);
 }
 
@@ -245,6 +262,50 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1clear_1free(JNIEnv *je
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1alloc_1init(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  jlong result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = mpq_alloc_init();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1clear_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = jarg1; 
+  mpq_clear_free(arg1);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1alloc_1init(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  jlong result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = mpf_alloc_init();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1clear_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = jarg1; 
+  mpf_clear_free(arg1);
+}
+
+
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpz_ptr arg1 ;
   mpz_srcptr arg2 ;
@@ -268,20 +329,6 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1add(JNIEnv *jenv, jcla
   arg2 = (mpz_srcptr)(void*)jarg2; 
   arg3 = (mpz_srcptr)(void*)jarg3; 
   mpz_add(arg1,arg2,arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1add_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jint jarg3) {
-  mpz_ptr arg1 ;
-  mpz_srcptr arg2 ;
-  int arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = (mpz_ptr)(void*)jarg1; 
-  arg2 = (mpz_srcptr)(void*)jarg2; 
-  arg3 = (int)jarg3; 
-  mpz_add_si(arg1,arg2,arg3);
 }
 
 
@@ -1762,17 +1809,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1set_1d(JNIEnv *jenv, j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1set_1f(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpz_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (mpz_ptr)(void*)jarg1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpz_set_f(arg1,arg2);
 }
 
@@ -1780,17 +1821,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1set_1f(JNIEnv *jenv, j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1set_1q(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpz_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (mpz_ptr)(void*)jarg1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpz_set_q(arg1,arg2);
 }
 
@@ -2127,23 +2162,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1xor(JNIEnv *jenv, jcla
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpq_abs(arg1,arg2);
 }
 
@@ -2152,62 +2175,32 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1add(JNIEnv *jenv, jcla
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
   mpq_srcptr arg3 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
-  mpq_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpq_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
+  arg3 = (mpq_srcptr)(void*)jarg3; 
   mpq_add(arg1,arg2,arg3);
 }
 
 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1canonicalize(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpq_ptr arg1 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   mpq_canonicalize(arg1);
 }
 
 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpq_ptr arg1 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   mpq_clear(arg1);
 }
 
@@ -2216,24 +2209,12 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1cmp(JNIEnv *jenv, jcla
   jint jresult = 0 ;
   mpq_srcptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_srcptr *argp1 ;
-  mpq_srcptr *argp2 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_srcptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   result = (int)mpq_cmp(arg1,arg2);
   jresult = (jint)result; 
   return jresult;
@@ -2245,17 +2226,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI__1mpq_1cmp_1si(JNIEnv *jenv
   mpq_srcptr arg1 ;
   long arg2 ;
   unsigned long arg3 ;
-  mpq_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_srcptr)(void*)jarg1; 
   arg2 = (long)jarg2; 
   arg3 = (unsigned long)jarg3; 
   result = (int)_mpq_cmp_si(arg1,arg2,arg3);
@@ -2269,17 +2244,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI__1mpq_1cmp_1ui(JNIEnv *jenv
   mpq_srcptr arg1 ;
   unsigned long arg2 ;
   unsigned long arg3 ;
-  mpq_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_srcptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
   arg3 = (unsigned long)jarg3; 
   result = (int)_mpq_cmp_ui(arg1,arg2,arg3);
@@ -2292,30 +2261,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1div(JNIEnv *jenv, jcla
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
   mpq_srcptr arg3 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
-  mpq_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpq_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
+  arg3 = (mpq_srcptr)(void*)jarg3; 
   mpq_div(arg1,arg2,arg3);
 }
 
@@ -2324,24 +2275,12 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1equal(JNIEnv *jenv, jc
   jint jresult = 0 ;
   mpq_srcptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_srcptr *argp1 ;
-  mpq_srcptr *argp2 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_srcptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   result = (int)mpq_equal(arg1,arg2);
   jresult = (jint)result; 
   return jresult;
@@ -2351,17 +2290,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1equal(JNIEnv *jenv, jc
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1num(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpz_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (mpz_ptr)(void*)jarg1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpq_get_num(arg1,arg2);
 }
 
@@ -2369,17 +2302,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1num(JNIEnv *jenv,
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1den(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpz_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (mpz_ptr)(void*)jarg1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpq_get_den(arg1,arg2);
 }
 
@@ -2387,17 +2314,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1den(JNIEnv *jenv,
 SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1d(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jdouble jresult = 0 ;
   mpq_srcptr arg1 ;
-  mpq_srcptr *argp1 ;
   double result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_srcptr)(void*)jarg1; 
   result = (double)mpq_get_d(arg1);
   jresult = (jdouble)result; 
   return jresult;
@@ -2409,7 +2330,6 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1str(JNIEnv *je
   char *arg1 = (char *) 0 ;
   int arg2 ;
   mpq_srcptr arg3 ;
-  mpq_srcptr *argp3 ;
   char *result = 0 ;
   
   (void)jenv;
@@ -2420,12 +2340,7 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1str(JNIEnv *je
     if (!arg1) return 0;
   }
   arg2 = (int)jarg2; 
-  argp3 = *(mpq_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg3 = *argp3; 
+  arg3 = (mpq_srcptr)(void*)jarg3; 
   result = (char *)mpq_get_str(arg1,arg2,arg3);
   if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
   if (arg1) (*jenv)->ReleaseStringUTFChars(jenv, jarg1, (const char *)arg1);
@@ -2435,16 +2350,10 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1get_1str(JNIEnv *je
 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1init(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpq_ptr arg1 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   mpq_init(arg1);
 }
 
@@ -2454,17 +2363,11 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1inp_1str(JNIEnv *jenv
   mpq_ptr arg1 ;
   FILE *arg2 = (FILE *) 0 ;
   int arg3 ;
-  mpq_ptr *argp1 ;
   size_t result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = *(FILE **)&jarg2; 
   arg3 = (int)jarg3; 
   result = (size_t)mpq_inp_str(arg1,arg2,arg3);
@@ -2476,23 +2379,11 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1inp_1str(JNIEnv *jenv
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpq_inv(arg1,arg2);
 }
 
@@ -2501,30 +2392,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1mul(JNIEnv *jenv, jcla
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
   mpq_srcptr arg3 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
-  mpq_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpq_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
+  arg3 = (mpq_srcptr)(void*)jarg3; 
   mpq_mul(arg1,arg2,arg3);
 }
 
@@ -2532,23 +2405,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1mul(JNIEnv *jenv, jcla
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpq_neg(arg1,arg2);
 }
 
@@ -2558,19 +2419,13 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1out_1str(JNIEnv *jenv
   FILE *arg1 = (FILE *) 0 ;
   int arg2 ;
   mpq_srcptr arg3 ;
-  mpq_srcptr *argp3 ;
   size_t result;
   
   (void)jenv;
   (void)jcls;
   arg1 = *(FILE **)&jarg1; 
   arg2 = (int)jarg2; 
-  argp3 = *(mpq_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return 0;
-  }
-  arg3 = *argp3; 
+  arg3 = (mpq_srcptr)(void*)jarg3; 
   result = (size_t)mpq_out_str(arg1,arg2,arg3);
   jresult = (jlong)result; 
   return jresult;
@@ -2580,23 +2435,11 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1out_1str(JNIEnv *jenv
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpq_set(arg1,arg2);
 }
 
@@ -2604,16 +2447,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set(JNIEnv *jenv, jcla
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2) {
   mpq_ptr arg1 ;
   double arg2 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = (double)jarg2; 
   mpq_set_d(arg1,arg2);
 }
@@ -2622,16 +2459,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1d(JNIEnv *jenv, j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1den(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpz_srcptr arg2 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   mpq_set_den(arg1,arg2);
 }
@@ -2640,23 +2471,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1den(JNIEnv *jenv,
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1f(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpq_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpq_set_f(arg1,arg2);
 }
 
@@ -2664,16 +2483,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1f(JNIEnv *jenv, j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1num(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpz_srcptr arg2 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   mpq_set_num(arg1,arg2);
 }
@@ -2683,16 +2496,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1si(JNIEnv *jenv, 
   mpq_ptr arg1 ;
   long arg2 ;
   unsigned long arg3 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = (long)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpq_set_si(arg1,arg2,arg3);
@@ -2704,17 +2511,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1str(JNIEnv *jenv,
   mpq_ptr arg1 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
-  mpq_ptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = 0;
   if (jarg2) {
     arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
@@ -2732,16 +2533,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1ui(JNIEnv *jenv, 
   mpq_ptr arg1 ;
   unsigned long arg2 ;
   unsigned long arg3 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpq_set_ui(arg1,arg2,arg3);
@@ -2751,16 +2546,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1ui(JNIEnv *jenv, 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1set_1z(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpz_srcptr arg2 ;
-  mpq_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   mpq_set_z(arg1,arg2);
 }
@@ -2770,30 +2559,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1sub(JNIEnv *jenv, jcla
   mpq_ptr arg1 ;
   mpq_srcptr arg2 ;
   mpq_srcptr arg3 ;
-  mpq_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
-  mpq_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpq_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
+  arg3 = (mpq_srcptr)(void*)jarg3; 
   mpq_sub(arg1,arg2,arg3);
 }
 
@@ -2801,23 +2572,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1sub(JNIEnv *jenv, jcla
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpq_ptr arg1 ;
   mpq_ptr arg2 ;
-  mpq_ptr *argp1 ;
-  mpq_ptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpq_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_ptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_ptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_ptr)(void*)jarg2; 
   mpq_swap(arg1,arg2);
 }
 
@@ -2825,23 +2584,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1swap(JNIEnv *jenv, jcl
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_abs(arg1,arg2);
 }
 
@@ -2850,30 +2597,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1add(JNIEnv *jenv, jcla
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_add(arg1,arg2,arg3);
 }
 
@@ -2882,23 +2611,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1add_1ui(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   unsigned long arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpf_add_ui(arg1,arg2,arg3);
 }
@@ -2907,39 +2624,21 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1add_1ui(JNIEnv *jenv, 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1ceil(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_ceil(arg1,arg2);
 }
 
 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpf_ptr arg1 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   mpf_clear(arg1);
 }
 
@@ -2948,24 +2647,12 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1cmp(JNIEnv *jenv, jcla
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_srcptr *argp1 ;
-  mpf_srcptr *argp2 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   result = (int)mpf_cmp(arg1,arg2);
   jresult = (jint)result; 
   return jresult;
@@ -2976,17 +2663,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1cmp_1d(JNIEnv *jenv, j
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
   double arg2 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   arg2 = (double)jarg2; 
   result = (int)mpf_cmp_d(arg1,arg2);
   jresult = (jint)result; 
@@ -2998,17 +2679,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1cmp_1si(JNIEnv *jenv, 
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
   long arg2 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   arg2 = (long)jarg2; 
   result = (int)mpf_cmp_si(arg1,arg2);
   jresult = (jint)result; 
@@ -3020,17 +2695,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1cmp_1ui(JNIEnv *jenv, 
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
   unsigned long arg2 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
   result = (int)mpf_cmp_ui(arg1,arg2);
   jresult = (jint)result; 
@@ -3042,30 +2711,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1div(JNIEnv *jenv, jcla
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_div(arg1,arg2,arg3);
 }
 
@@ -3074,23 +2725,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1div_1ui(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   unsigned long arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpf_div_ui(arg1,arg2,arg3);
 }
@@ -3098,16 +2737,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1div_1ui(JNIEnv *jenv, 
 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1dump(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   mpf_dump(arg1);
 }
 
@@ -3115,17 +2748,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1dump(JNIEnv *jenv, jcl
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1sint_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_fits_sint_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3135,17 +2762,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1sint_1p(JNIEnv *
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1slong_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_fits_slong_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3155,17 +2776,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1slong_1p(JNIEnv 
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1sshort_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_fits_sshort_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3175,17 +2790,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1sshort_1p(JNIEnv
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1uint_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_fits_uint_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3195,17 +2804,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1uint_1p(JNIEnv *
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1ulong_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_fits_ulong_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3215,17 +2818,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1ulong_1p(JNIEnv 
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1ushort_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_fits_ushort_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3235,23 +2832,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1fits_1ushort_1p(JNIEnv
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1floor(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_floor(arg1,arg2);
 }
 
@@ -3259,17 +2844,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1floor(JNIEnv *jenv, jc
 SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jdouble jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   double result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (double)mpf_get_d(arg1);
   jresult = (jdouble)result; 
   return jresult;
@@ -3280,18 +2859,12 @@ SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d_12exp(JNIEnv
   jdouble jresult = 0 ;
   long *arg1 = (long *) 0 ;
   mpf_srcptr arg2 ;
-  mpf_srcptr *argp2 ;
   double result;
   
   (void)jenv;
   (void)jcls;
   arg1 = *(long **)&jarg1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg2 = *argp2; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   result = (double)mpf_get_d_2exp(arg1,arg2);
   jresult = (jdouble)result; 
   return jresult;
@@ -3301,17 +2874,11 @@ SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d_12exp(JNIEnv
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1si(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   long result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (long)mpf_get_si(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3325,7 +2892,6 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str(JNIEnv *je
   int arg3 ;
   size_t arg4 ;
   mpf_srcptr arg5 ;
-  mpf_srcptr *argp5 ;
   char *result = 0 ;
   
   (void)jenv;
@@ -3338,12 +2904,7 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str(JNIEnv *je
   arg2 = *(mp_exp_t **)&jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (size_t)jarg4; 
-  argp5 = *(mpf_srcptr **)&jarg5; 
-  if (!argp5) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg5 = *argp5; 
+  arg5 = (mpf_srcptr)(void*)jarg5; 
   result = (char *)mpf_get_str(arg1,arg2,arg3,arg4,arg5);
   if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
   if (arg1) (*jenv)->ReleaseStringUTFChars(jenv, jarg1, (const char *)arg1);
@@ -3354,17 +2915,11 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str(JNIEnv *je
 SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   unsigned long result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (unsigned long)mpf_get_ui(arg1);
   jresult = (jlong)result; 
   return jresult;
@@ -3373,16 +2928,10 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1ui(JNIEnv *jenv,
 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpf_ptr arg1 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   mpf_init(arg1);
 }
 
@@ -3390,23 +2939,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init(JNIEnv *jenv, jcl
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_init_set(arg1,arg2);
 }
 
@@ -3414,16 +2951,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set(JNIEnv *jenv
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2) {
   mpf_ptr arg1 ;
   double arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (double)jarg2; 
   mpf_init_set_d(arg1,arg2);
 }
@@ -3432,16 +2963,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set_1d(JNIEnv *j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
   mpf_ptr arg1 ;
   long arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (long)jarg2; 
   mpf_init_set_si(arg1,arg2);
 }
@@ -3452,17 +2977,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set_1str(JNIEnv 
   mpf_ptr arg1 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
-  mpf_ptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = 0;
   if (jarg2) {
     arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
@@ -3479,16 +2998,10 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set_1str(JNIEnv 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init_1set_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   unsigned long arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
   mpf_init_set_ui(arg1,arg2);
 }
@@ -3499,17 +3012,11 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1inp_1str(JNIEnv *jenv
   mpf_ptr arg1 ;
   FILE *arg2 = (FILE *) 0 ;
   int arg3 ;
-  mpf_ptr *argp1 ;
   size_t result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = *(FILE **)&jarg2; 
   arg3 = (int)jarg3; 
   result = (size_t)mpf_inp_str(arg1,arg2,arg3);
@@ -3521,17 +3028,11 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1inp_1str(JNIEnv *jenv
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1integer_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (int)mpf_integer_p(arg1);
   jresult = (jint)result; 
   return jresult;
@@ -3542,30 +3043,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1mul(JNIEnv *jenv, jcla
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_mul(arg1,arg2,arg3);
 }
 
@@ -3574,23 +3057,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1mul_1ui(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   unsigned long arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpf_mul_ui(arg1,arg2,arg3);
 }
@@ -3599,23 +3070,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1mul_1ui(JNIEnv *jenv, 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_neg(arg1,arg2);
 }
 
@@ -3626,7 +3085,6 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1out_1str(JNIEnv *jenv
   int arg2 ;
   size_t arg3 ;
   mpf_srcptr arg4 ;
-  mpf_srcptr *argp4 ;
   size_t result;
   
   (void)jenv;
@@ -3634,12 +3092,7 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1out_1str(JNIEnv *jenv
   arg1 = *(FILE **)&jarg1; 
   arg2 = (int)jarg2; 
   arg3 = (size_t)jarg3; 
-  argp4 = *(mpf_srcptr **)&jarg4; 
-  if (!argp4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg4 = *argp4; 
+  arg4 = (mpf_srcptr)(void*)jarg4; 
   result = (size_t)mpf_out_str(arg1,arg2,arg3,arg4);
   jresult = (jlong)result; 
   return jresult;
@@ -3650,23 +3103,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1pow_1ui(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   unsigned long arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpf_pow_ui(arg1,arg2,arg3);
 }
@@ -3676,17 +3117,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1random2(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mp_size_t arg2 ;
   mp_exp_t arg3 ;
-  mpf_ptr *argp1 ;
   mp_exp_t *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (mp_size_t)jarg2; 
   argp3 = *(mp_exp_t **)&jarg3; 
   if (!argp3) {
@@ -3702,30 +3137,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1reldiff(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_reldiff(arg1,arg2,arg3);
 }
 
@@ -3733,23 +3150,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1reldiff(JNIEnv *jenv, 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_set(arg1,arg2);
 }
 
@@ -3757,16 +3162,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set(JNIEnv *jenv, jcla
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2) {
   mpf_ptr arg1 ;
   double arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (double)jarg2; 
   mpf_set_d(arg1,arg2);
 }
@@ -3775,23 +3174,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1d(JNIEnv *jenv, j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1q(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpq_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpq_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpq_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpq_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
   mpf_set_q(arg1,arg2);
 }
 
@@ -3799,16 +3186,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1q(JNIEnv *jenv, j
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
   mpf_ptr arg1 ;
   long arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (long)jarg2; 
   mpf_set_si(arg1,arg2);
 }
@@ -3819,17 +3200,11 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1str(JNIEnv *jenv,
   mpf_ptr arg1 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
-  mpf_ptr *argp1 ;
   int result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = 0;
   if (jarg2) {
     arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
@@ -3846,16 +3221,10 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1str(JNIEnv *jenv,
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   unsigned long arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
   mpf_set_ui(arg1,arg2);
 }
@@ -3864,16 +3233,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1ui(JNIEnv *jenv, 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1z(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpz_srcptr arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   mpf_set_z(arg1,arg2);
 }
@@ -3882,17 +3245,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1z(JNIEnv *jenv, j
 SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1size(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   mpf_srcptr arg1 ;
-  mpf_srcptr *argp1 ;
   size_t result;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_srcptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return 0;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_srcptr)(void*)jarg1; 
   result = (size_t)mpf_size(arg1);
   jresult = (jlong)result; 
   return jresult;
@@ -3902,23 +3259,11 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1size(JNIEnv *jenv, jc
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_sqrt(arg1,arg2);
 }
 
@@ -3926,16 +3271,10 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sqrt(JNIEnv *jenv, jcl
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sqrt_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   unsigned long arg2 ;
-  mpf_ptr *argp1 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
   mpf_sqrt_ui(arg1,arg2);
 }
@@ -3945,30 +3284,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sub(JNIEnv *jenv, jcla
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_sub(arg1,arg2,arg3);
 }
 
@@ -3977,23 +3298,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sub_1ui(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
   unsigned long arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   arg3 = (unsigned long)jarg3; 
   mpf_sub_ui(arg1,arg2,arg3);
 }
@@ -4002,23 +3311,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sub_1ui(JNIEnv *jenv, 
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_ptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_ptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_ptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_ptr)(void*)jarg2; 
   mpf_swap(arg1,arg2);
 }
 
@@ -4026,23 +3323,11 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1swap(JNIEnv *jenv, jcl
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1trunc(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp2 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
-  argp2 = *(mpf_srcptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
   mpf_trunc(arg1,arg2);
 }
 
@@ -4051,24 +3336,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1ui_1div(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   unsigned long arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_ui_div(arg1,arg2,arg3);
 }
 
@@ -4077,24 +3350,12 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1ui_1sub(JNIEnv *jenv, 
   mpf_ptr arg1 ;
   unsigned long arg2 ;
   mpf_srcptr arg3 ;
-  mpf_ptr *argp1 ;
-  mpf_srcptr *argp3 ;
   
   (void)jenv;
   (void)jcls;
-  argp1 = *(mpf_ptr **)&jarg1; 
-  if (!argp1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_ptr");
-    return ;
-  }
-  arg1 = *argp1; 
+  arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (unsigned long)jarg2; 
-  argp3 = *(mpf_srcptr **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mpf_srcptr");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_ui_sub(arg1,arg2,arg3);
 }
 
