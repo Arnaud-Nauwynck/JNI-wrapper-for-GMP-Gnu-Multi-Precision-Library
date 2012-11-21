@@ -246,10 +246,6 @@ public class gmp {
     return gmpJNI.mpz_get_d(SWIGTYPE_p_mpz_ptr.getCPtr(arg0));
   }
 
-  public static double mpz_get_d_2exp(SWIGTYPE_p_long arg0, SWIGTYPE_p_mpz_ptr arg1) {
-    return gmpJNI.mpz_get_d_2exp(SWIGTYPE_p_long.getCPtr(arg0), SWIGTYPE_p_mpz_ptr.getCPtr(arg1));
-  }
-
   public static int mpz_get_si(SWIGTYPE_p_mpz_ptr arg0) {
     return gmpJNI.mpz_get_si(SWIGTYPE_p_mpz_ptr.getCPtr(arg0));
   }
@@ -260,10 +256,6 @@ public class gmp {
 
   public static long mpz_get_ui(SWIGTYPE_p_mpz_ptr arg0) {
     return gmpJNI.mpz_get_ui(SWIGTYPE_p_mpz_ptr.getCPtr(arg0));
-  }
-
-  public static SWIGTYPE_p_mp_limb_t mpz_getlimbn(SWIGTYPE_p_mpz_ptr arg0, long arg1) {
-    return new SWIGTYPE_p_mp_limb_t(gmpJNI.mpz_getlimbn(SWIGTYPE_p_mpz_ptr.getCPtr(arg0), arg1), true);
   }
 
   public static void mpz_import(SWIGTYPE_p_mpz_ptr arg0, long arg1, int arg2, long arg3, int arg4, long arg5, SWIGTYPE_p_void arg6) {
@@ -726,16 +718,20 @@ public class gmp {
     return gmpJNI.mpf_get_d(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static double mpf_get_d_2exp(SWIGTYPE_p_long arg0, SWIGTYPE_p_mpf_ptr arg1) {
-    return gmpJNI.mpf_get_d_2exp(SWIGTYPE_p_long.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
+  public static double mpf_get_d_2exp(int[] OUTPUT, SWIGTYPE_p_mpf_ptr arg1) {
+    return gmpJNI.mpf_get_d_2exp(OUTPUT, SWIGTYPE_p_mpf_ptr.getCPtr(arg1));
   }
 
   public static int mpf_get_si(SWIGTYPE_p_mpf_ptr arg0) {
     return gmpJNI.mpf_get_si(SWIGTYPE_p_mpf_ptr.getCPtr(arg0));
   }
 
-  public static String mpf_get_str(String arg0, SWIGTYPE_p_mp_exp_t arg1, int arg2, long arg3, SWIGTYPE_p_mpf_ptr arg4) {
-    return gmpJNI.mpf_get_str(arg0, SWIGTYPE_p_mp_exp_t.getCPtr(arg1), arg2, arg3, SWIGTYPE_p_mpf_ptr.getCPtr(arg4));
+  public static String mpf_get_str(String arg0, int[] OUTPUT, int arg2, long arg3, SWIGTYPE_p_mpf_ptr arg4) {
+    return gmpJNI.mpf_get_str(arg0, OUTPUT, arg2, arg3, SWIGTYPE_p_mpf_ptr.getCPtr(arg4));
+  }
+
+  public static String mpf_get_str2(int[] OUTPUT, int arg1, long arg2, SWIGTYPE_p_mpf_ptr arg3) {
+    return gmpJNI.mpf_get_str2(OUTPUT, arg1, arg2, SWIGTYPE_p_mpf_ptr.getCPtr(arg3));
   }
 
   public static long mpf_get_ui(SWIGTYPE_p_mpf_ptr arg0) {
@@ -794,8 +790,8 @@ public class gmp {
     gmpJNI.mpf_pow_ui(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), SWIGTYPE_p_mpf_ptr.getCPtr(arg1), arg2);
   }
 
-  public static void mpf_random2(SWIGTYPE_p_mpf_ptr arg0, long arg1, SWIGTYPE_p_mp_exp_t arg2) {
-    gmpJNI.mpf_random2(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, SWIGTYPE_p_mp_exp_t.getCPtr(arg2));
+  public static void mpf_random2(SWIGTYPE_p_mpf_ptr arg0, long arg1, int arg2) {
+    gmpJNI.mpf_random2(SWIGTYPE_p_mpf_ptr.getCPtr(arg0), arg1, arg2);
   }
 
   public static void mpf_reldiff(SWIGTYPE_p_mpf_ptr arg0, SWIGTYPE_p_mpf_ptr arg1, SWIGTYPE_p_mpf_ptr arg2) {

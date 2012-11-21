@@ -2,7 +2,7 @@ package org.gnu.gmp.swig;
 
 /**
  * Java JNI wrapper for GNU "mpq_t"
- * represents a fraction numerator/denominator,  where num and den are both big precision values
+ * represents a fraction numerator/denominator,  where num and den are both multi precision values
  */
 public class MPQ {
 
@@ -50,6 +50,10 @@ public class MPQ {
 
 	public long getPtr() {
 		return ptr != null? SWIGTYPE_p_mpq_ptr.getCPtr(ptr) : 0;
+	}
+	
+	/*package protected*/ SWIGTYPE_p_mpq_ptr getSwigPtr() {
+		return ptr;
 	}
 	
 	private static void checkPositiveArg(long value) {
@@ -103,8 +107,17 @@ public class MPQ {
 		return gmp.mpq_get_d(ptr);
 	}
 	
-	//TODO
-//	public String get_str(String jarg1, int jarg2, long jarg3);
+	public String get_str(int base) {
+		return gmp.mpq_get_str(null, base, ptr);
+	}
+	
+	public void set_str(String text, int base) {
+		int res = gmp.mpq_set_str(ptr, text, base);
+		if (res != 0) {
+			throw new IllegalArgumentException("Failed to parse rational number text '" + text + "'");
+		}
+	}
+	
 //	public long set_inp_str(long jarg2, int jarg3);
 
 	public void set_inv(MPQ src) {
@@ -122,7 +135,11 @@ public class MPQ {
 	//TODO
 //	public long set_out_str(int jarg2, long jarg3);
 //	public void set_set(long jarg2);
-	
+
+	public void set(MPQ src) {
+		gmp.mpq_set(ptr, src.ptr);
+	}
+
 	public void set_d(double src) {
 		gmp.mpq_set_d(ptr, src);
 	}
@@ -132,7 +149,7 @@ public class MPQ {
 	}
 
 	public void set_num(MPZ num) {
-		gmp.mpq_set_den(ptr, num.getSwigPtr());
+		gmp.mpq_set_num(ptr, num.getSwigPtr());
 	}
 
 	//TODO
@@ -162,4 +179,15 @@ public class MPQ {
 		gmp.mpq_swap(ptr, other.ptr);
 	}
 
+	// ------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		// may be slow in debugger step by step .. could test num size and den size to avoid print!!... 
+		if (ptr == null) {
+			return "<disposed MPQ>";
+		}
+		return get_str(10);
+	}
+	
 }

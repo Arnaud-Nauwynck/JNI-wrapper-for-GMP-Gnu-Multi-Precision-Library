@@ -2,7 +2,7 @@ package org.gnu.gmp.swig;
 
 /**
  * Java JNI wrapper for GNU "mpz_t"
- * i.e. similar to java.util.BigInteger, but FAST, native, and mutable...  
+ * i.e. similar to java.util.BigInteger, but FAST, native, and mutable multi precision int...  
  */
 public class MPZ {
 

@@ -207,6 +207,7 @@ void mpz_clear_free(jlong addr) {
 	free(ptr);
 }
 
+
 jlong mpq_alloc_init() {
 	mpq_ptr addr = (mpq_ptr) malloc(sizeof(mpq_t));
 	jlong ret = (jlong) ((void*) addr);
@@ -234,6 +235,13 @@ void mpf_clear_free(jlong addr) {
 	free(ptr);
 }
 
+
+
+/* jni helper for mpf_get_str() accepting null char* arg1, and int* arg2 */
+char *mpf_get_str2 (long int* expptr, int base, size_t numDigits, mpf_srcptr src) {
+	char* res = mpf_get_str(NULL, (mp_exp_t*)expptr, base, numDigits, src);
+	return res;
+}
 
 
 #ifdef __cplusplus
@@ -1114,22 +1122,6 @@ SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1get_1d(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1get_1d_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
-  jdouble jresult = 0 ;
-  long *arg1 = (long *) 0 ;
-  mpz_srcptr arg2 ;
-  double result;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(long **)&jarg1; 
-  arg2 = (mpz_srcptr)(void*)jarg2; 
-  result = (double)mpz_get_d_2exp(arg1,arg2);
-  jresult = (jdouble)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1get_1si(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpz_srcptr arg1 ;
@@ -1177,26 +1169,6 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1get_1ui(JNIEnv *jenv,
   arg1 = (mpz_srcptr)(void*)jarg1; 
   result = (unsigned long)mpz_get_ui(arg1);
   jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1getlimbn(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
-  jlong jresult = 0 ;
-  mpz_srcptr arg1 ;
-  mp_size_t arg2 ;
-  mp_limb_t result;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = (mpz_srcptr)(void*)jarg1; 
-  arg2 = (mp_size_t)jarg2; 
-  result = mpz_getlimbn(arg1,arg2);
-  {
-    mp_limb_t * resultptr = (mp_limb_t *) malloc(sizeof(mp_limb_t));
-    memmove(resultptr, &result, sizeof(mp_limb_t));
-    *(mp_limb_t **)&jresult = resultptr;
-  }
   return jresult;
 }
 
@@ -2855,18 +2827,34 @@ SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d_12exp(JNIEnv *jenv, jclass jcls, jintArray jarg1, jlong jarg2) {
   jdouble jresult = 0 ;
   long *arg1 = (long *) 0 ;
   mpf_srcptr arg2 ;
+  long temp1 ;
   double result;
   
   (void)jenv;
   (void)jcls;
-  arg1 = *(long **)&jarg1; 
+  {
+    if (!jarg1) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if ((*jenv)->GetArrayLength(jenv, jarg1) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg1 = &temp1; 
+  }
   arg2 = (mpf_srcptr)(void*)jarg2; 
   result = (double)mpf_get_d_2exp(arg1,arg2);
   jresult = (jdouble)result; 
+  {
+    jint jvalue = (jint)temp1;
+    (*jenv)->SetIntArrayRegion(jenv, jarg1, 0, 1, &jvalue);
+  }
+  
   return jresult;
 }
 
@@ -2885,13 +2873,14 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1si(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jint jarg3, jlong jarg4, jlong jarg5) {
+SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str(JNIEnv *jenv, jclass jcls, jstring jarg1, jintArray jarg2, jint jarg3, jlong jarg4, jlong jarg5) {
   jstring jresult = 0 ;
   char *arg1 = (char *) 0 ;
   mp_exp_t *arg2 = (mp_exp_t *) 0 ;
   int arg3 ;
   size_t arg4 ;
   mpf_srcptr arg5 ;
+  mp_exp_t temp2 ;
   char *result = 0 ;
   
   (void)jenv;
@@ -2901,13 +2890,64 @@ SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str(JNIEnv *je
     arg1 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg1, 0);
     if (!arg1) return 0;
   }
-  arg2 = *(mp_exp_t **)&jarg2; 
+  {
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if ((*jenv)->GetArrayLength(jenv, jarg2) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg2 = &temp2; 
+  }
   arg3 = (int)jarg3; 
   arg4 = (size_t)jarg4; 
   arg5 = (mpf_srcptr)(void*)jarg5; 
   result = (char *)mpf_get_str(arg1,arg2,arg3,arg4,arg5);
   if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  {
+    jint jvalue = (jint)temp2;
+    (*jenv)->SetIntArrayRegion(jenv, jarg2, 0, 1, &jvalue);
+  }
   if (arg1) (*jenv)->ReleaseStringUTFChars(jenv, jarg1, (const char *)arg1);
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1str2(JNIEnv *jenv, jclass jcls, jintArray jarg1, jint jarg2, jlong jarg3, jlong jarg4) {
+  jstring jresult = 0 ;
+  long *arg1 = (long *) 0 ;
+  int arg2 ;
+  size_t arg3 ;
+  mpf_srcptr arg4 ;
+  long temp1 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  {
+    if (!jarg1) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "array null");
+      return 0;
+    }
+    if ((*jenv)->GetArrayLength(jenv, jarg1) == 0) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, "Array must contain at least 1 element");
+      return 0;
+    }
+    arg1 = &temp1; 
+  }
+  arg2 = (int)jarg2; 
+  arg3 = (size_t)jarg3; 
+  arg4 = (mpf_srcptr)(void*)jarg4; 
+  result = (char *)mpf_get_str2(arg1,arg2,arg3,arg4);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  {
+    jint jvalue = (jint)temp1;
+    (*jenv)->SetIntArrayRegion(jenv, jarg1, 0, 1, &jvalue);
+  }
+  
   return jresult;
 }
 
@@ -3113,22 +3153,16 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1pow_1ui(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1random2(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1random2(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jint jarg3) {
   mpf_ptr arg1 ;
   mp_size_t arg2 ;
   mp_exp_t arg3 ;
-  mp_exp_t *argp3 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (mp_size_t)jarg2; 
-  argp3 = *(mp_exp_t **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mp_exp_t");
-    return ;
-  }
-  arg3 = *argp3; 
+  arg3 = (mp_exp_t)jarg3; 
   mpf_random2(arg1,arg2,arg3);
 }
 

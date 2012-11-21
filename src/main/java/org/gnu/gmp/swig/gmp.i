@@ -1,5 +1,7 @@
 %module gmp
 
+%include "typemaps.i"
+
 // cf http://www.swig.org/Doc2.0/Java.html#Java
 
 %{
@@ -12,6 +14,7 @@ typedef unsigned long int	size_t;
 typedef long int	mp_long_t;
 typedef unsigned long int	mp_size_t;
 typedef unsigned long int	mp_bitcnt_t;
+typedef long int	mp_exp_t;
 
 typedef mpz_ptr mpz_srcptr;
 typedef mpq_ptr mpq_srcptr;
@@ -58,6 +61,7 @@ void mpz_clear_free(jlong addr) {
 	free(ptr);
 }
 
+
 jlong mpq_alloc_init() {
 	mpq_ptr addr = (mpq_ptr) malloc(sizeof(mpq_t));
 	jlong ret = (jlong) ((void*) addr);
@@ -97,6 +101,7 @@ void mpq_clear_free(jlong);
 
 jlong mpf_alloc_init();
 void mpf_clear_free(jlong);
+
 
 
 
@@ -237,7 +242,7 @@ void mpz_gcdext (mpz_ptr, mpz_ptr, mpz_ptr, mpz_srcptr, mpz_srcptr);
 
 double mpz_get_d (mpz_srcptr);
 
-double mpz_get_d_2exp (signed long int *, mpz_srcptr);
+// double mpz_get_d_2exp (signed long int *, mpz_srcptr);
 
 /* signed */ long int mpz_get_si (mpz_srcptr);
 
@@ -245,7 +250,7 @@ char *mpz_get_str (char *, int, mpz_srcptr);
 
 unsigned long int mpz_get_ui (mpz_srcptr);
 
-mp_limb_t mpz_getlimbn (mpz_srcptr, mp_size_t);
+// mp_limb_t mpz_getlimbn (mpz_srcptr, mp_size_t);
 
 // mp_bitcnt_t mpz_hamdist (mpz_srcptr, mpz_srcptr);
 
@@ -534,7 +539,7 @@ void mpf_floor (mpf_ptr, mpf_srcptr);
 
 double mpf_get_d (mpf_srcptr);
 
-double mpf_get_d_2exp (signed long int *, mpf_srcptr);
+double mpf_get_d_2exp (signed long int* OUTPUT, mpf_srcptr);
 
 // mp_bitcnt_t mpf_get_default_prec (void);
 
@@ -542,7 +547,17 @@ double mpf_get_d_2exp (signed long int *, mpf_srcptr);
 
 long mpf_get_si (mpf_srcptr);
 
-char *mpf_get_str (char *, mp_exp_t *, int, size_t, mpf_srcptr);
+char *mpf_get_str (char *, mp_exp_t* OUTPUT, int, size_t, mpf_srcptr);
+
+%{
+/* jni helper for mpf_get_str() accepting null char* arg1, and int* arg2 */
+char *mpf_get_str2 (long int* expptr, int base, size_t numDigits, mpf_srcptr src) {
+	char* res = mpf_get_str(NULL, (mp_exp_t*)expptr, base, numDigits, src);
+	return res;
+}
+%}
+char *mpf_get_str2 (signed long int* OUTPUT, int, size_t, mpf_srcptr);
+
 
 unsigned long mpf_get_ui (mpf_srcptr);
 

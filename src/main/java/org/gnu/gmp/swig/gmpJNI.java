@@ -68,11 +68,9 @@ class gmpJNI {
   public final static native long mpz_gcd_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_gcdext(long jarg1, long jarg2, long jarg3, long jarg4, long jarg5);
   public final static native double mpz_get_d(long jarg1);
-  public final static native double mpz_get_d_2exp(long jarg1, long jarg2);
   public final static native int mpz_get_si(long jarg1);
   public final static native String mpz_get_str(String jarg1, int jarg2, long jarg3);
   public final static native long mpz_get_ui(long jarg1);
-  public final static native long mpz_getlimbn(long jarg1, long jarg2);
   public final static native void mpz_import(long jarg1, long jarg2, int jarg3, long jarg4, int jarg5, long jarg6, long jarg7);
   public final static native void mpz_init(long jarg1);
   public final static native void mpz_init_set(long jarg1, long jarg2);
@@ -188,9 +186,10 @@ class gmpJNI {
   public final static native int mpf_fits_ushort_p(long jarg1);
   public final static native void mpf_floor(long jarg1, long jarg2);
   public final static native double mpf_get_d(long jarg1);
-  public final static native double mpf_get_d_2exp(long jarg1, long jarg2);
+  public final static native double mpf_get_d_2exp(int[] jarg1, long jarg2);
   public final static native int mpf_get_si(long jarg1);
-  public final static native String mpf_get_str(String jarg1, long jarg2, int jarg3, long jarg4, long jarg5);
+  public final static native String mpf_get_str(String jarg1, int[] jarg2, int jarg3, long jarg4, long jarg5);
+  public final static native String mpf_get_str2(int[] jarg1, int jarg2, long jarg3, long jarg4);
   public final static native long mpf_get_ui(long jarg1);
   public final static native void mpf_init(long jarg1);
   public final static native void mpf_init_set(long jarg1, long jarg2);
@@ -205,7 +204,7 @@ class gmpJNI {
   public final static native void mpf_neg(long jarg1, long jarg2);
   public final static native long mpf_out_str(long jarg1, int jarg2, long jarg3, long jarg4);
   public final static native void mpf_pow_ui(long jarg1, long jarg2, long jarg3);
-  public final static native void mpf_random2(long jarg1, long jarg2, long jarg3);
+  public final static native void mpf_random2(long jarg1, long jarg2, int jarg3);
   public final static native void mpf_reldiff(long jarg1, long jarg2, long jarg3);
   public final static native void mpf_set(long jarg1, long jarg2);
   public final static native void mpf_set_d(long jarg1, double jarg2);
