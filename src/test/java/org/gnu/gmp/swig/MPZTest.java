@@ -55,6 +55,13 @@ public class MPZTest {
 	}
 
 	@Test
+	public void testGet_sgn() {
+		Assert.assertEquals(-1, mpzMinus12.get_sgn());
+		Assert.assertEquals(0, mpz0.get_sgn());
+		Assert.assertEquals(+1, mpz12.get_sgn());
+	}
+	
+	@Test
 	public void testSet_abs() {
 		MPZ res = new MPZ();
 		res.set_abs(mpzMinus1234);
@@ -127,7 +134,24 @@ public class MPZTest {
 		dispose(res);
 	}
 	
-	// public void cdiv_q_2exp(MPZ left, mp_bitcnt_t);
+	@Test
+	public void testSet_cdiv_q_2exp() {
+		MPZ res = new MPZ();
+		res.set_cdiv_q_2exp(mpz12, 2); // = 12 / (2^2)
+		assertEquals(3, res);
+		dispose(res);
+	}
+
+	@Test
+	public void testSet_cdiv_r() {
+		MPZ res = new MPZ();
+		res.set_cdiv_r(mpz12, mpz3);
+		assertEquals(0, res);
+
+		res.set_cdiv_r(mpz12, mpz5);
+		assertEquals(-3, res); // 12=3*5-3
+		dispose(res);
+	}
 	
 	@Test
 	public void testSet_cdiv_q_ui() {
@@ -170,19 +194,19 @@ public class MPZTest {
 		dispose(q, r);
 	}
 
+	
 	@Test
-	public void testSet_cdiv_r() {
+	public void testSet_cdiv_r_2exp() {
 		MPZ res = new MPZ();
-		res.set_cdiv_r(mpz12, mpz3);
+		res.set_cdiv_r_2exp(mpz12, 2); 
 		assertEquals(0, res);
-
-		res.set_cdiv_r(mpz12, mpz5);
-		assertEquals(-3, res); // 12=3*5-3
+		res.set_cdiv_r_2exp(mpz1234, 4);
+		int q = 1234 / (2*2*2*2);
+		int r = 1234 - (1+q)*(2*2*2*2); 
+		assertEquals(r, res);
 		dispose(res);
 	}
 	
-//	// public void cdiv_r_2exp(MPZ left, mp_bitcnt_t);
-
 	@Test
 	public void testGet_cdiv_r_ui() {
 		MPZ res = new MPZ();
@@ -280,10 +304,14 @@ public class MPZTest {
 		Assert.assertTrue(mpz12.isCongruent_p(mpz0, mpz3));
 	}
 
-//	// int congruent_2exp_p (MPZ left, mpz_srcptr, mp_bitcnt_t) {
-//	// }
-//	
 	@Test
+	public void testIsCongruent_2exp_p () {
+		Assert.assertTrue(mpz12.isCongruent_2exp_p(mpz0, 2)); // 12 == 0 modulo 2**2
+		Assert.assertTrue(mpz12.isCongruent_2exp_p(mpz4, 3)); // 12 = 4 modulo 2**3
+		Assert.assertFalse(mpz12.isCongruent_2exp_p(mpz0, 3)); // 12 != 0 modulo 2**3
+	 }
+
+ 	@Test
 	public void testIsCongruent_ui_p() {
 		Assert.assertTrue(mpz12.isCongruent_ui_p(2, 5));
 		Assert.assertTrue(mpz12.isCongruent_ui_p(0, 3));
@@ -317,8 +345,12 @@ public class MPZTest {
 		Assert.assertFalse(mpz12.isDivisible_ui_p(5));
 	}
 	
-//	// int mpz_divisible_2exp_p (MPZ left, mp_bitcnt_t);
-//	
+	@Test
+	public void testIsDivisible_2exp_p() {
+		Assert.assertTrue(mpz12.isDivisible_2exp_p(2));
+		Assert.assertFalse(mpz12.isDivisible_2exp_p(5));
+	}
+	
 //	// TODO??  public void dump (MPZ src);
 //	
 //	// TODO?? void *mpz_export (void *, size_t *, int, size_t, int, size_t, MPZ src);
@@ -347,8 +379,25 @@ public class MPZTest {
 		dispose(res);
 	}
 	
-//	// public void fdiv_q_2exp(MPZ left, mp_bitcnt_t);
-	
+	@Test
+	public void testSet_fdiv_q_2exp() {
+		MPZ res = new MPZ();
+		res.set_fdiv_q_2exp(mpz12, 2); // = 12 / (2^2)
+		assertEquals(3, res);
+		dispose(res);
+	}
+
+	@Test
+	public void testSet_fdiv_r_2exp() {
+		MPZ res = new MPZ();
+		res.set_fdiv_r_2exp(mpz12, 2);
+		assertEquals(0, res);
+
+		res.set_fdiv_r_2exp(mpz12, 3); // 12 / (2*2*2) => 1, rest 4
+		assertEquals(4, res);
+		dispose(res);
+	}
+		
 	@Test
 	public void testSet_fdiv_q_ui() {
 		MPZ res = new MPZ();
@@ -1066,5 +1115,17 @@ public class MPZTest {
 		res.set_xor(mpz12, mpz5);
 		assertEquals(12^5, res);
 	}
-	
+
+	@Test
+	public void testIs_odd() {
+		Assert.assertTrue(mpzMinus1.is_odd());
+		Assert.assertFalse(mpz2.is_odd());
+	}
+
+	@Test
+	public void testIs_even() {
+		Assert.assertFalse(mpzMinus1.is_even());
+		Assert.assertTrue(mpz2.is_even());
+	}
+
 }

@@ -229,6 +229,13 @@ jlong mpf_alloc_init() {
 	return ret;
 }
 
+jlong mpf_alloc_init2(mp_bitcnt_t prec) {
+	mpf_ptr addr = (mpf_ptr) malloc(sizeof(mpf_t));
+	jlong ret = (jlong) ((void*) addr);
+	mpf_init2(addr, prec);
+	return ret;
+}
+
 void mpf_clear_free(jlong addr) {
 	mpf_ptr ptr = (mpf_ptr)addr;
 	mpf_clear(ptr);
@@ -299,6 +306,20 @@ SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1alloc_1init(JNIEnv *j
   (void)jenv;
   (void)jcls;
   result = mpf_alloc_init();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1alloc_1init2(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  mp_bitcnt_t arg1 ;
+  jlong result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mp_bitcnt_t)jarg1; 
+  result = mpf_alloc_init2(arg1);
   jresult = result; 
   return jresult;
 }
@@ -452,6 +473,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1cdiv_1q(JNIEnv *jenv, 
 }
 
 
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1cdiv_1q_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpz_ptr arg1 ;
+  mpz_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  arg2 = (mpz_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpz_cdiv_q_2exp(arg1,arg2,arg3);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1cdiv_1q_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
   jlong jresult = 0 ;
   mpz_ptr arg1 ;
@@ -517,6 +552,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1cdiv_1r(JNIEnv *jenv, 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   arg3 = (mpz_srcptr)(void*)jarg3; 
   mpz_cdiv_r(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1cdiv_1r_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpz_ptr arg1 ;
+  mpz_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  arg2 = (mpz_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpz_cdiv_r_2exp(arg1,arg2,arg3);
 }
 
 
@@ -706,6 +755,24 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1congruent_1p(JNIEnv *j
 }
 
 
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1congruent_12exp_1p(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  jint jresult = 0 ;
+  mpz_srcptr arg1 ;
+  mpz_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_srcptr)(void*)jarg1; 
+  arg2 = (mpz_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  result = (int)mpz_congruent_2exp_p(arg1,arg2,arg3);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1congruent_1ui_1p(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
   jint jresult = 0 ;
   mpz_srcptr arg1 ;
@@ -784,6 +851,22 @@ SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1divisible_1ui_1p(JNIEn
 }
 
 
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1divisible_12exp_1p(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jint jresult = 0 ;
+  mpz_srcptr arg1 ;
+  mp_bitcnt_t arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_srcptr)(void*)jarg1; 
+  arg2 = (mp_bitcnt_t)jarg2; 
+  result = (int)mpz_divisible_2exp_p(arg1,arg2);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1dump(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mpz_srcptr arg1 ;
   
@@ -843,6 +926,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1fdiv_1q(JNIEnv *jenv, 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   arg3 = (mpz_srcptr)(void*)jarg3; 
   mpz_fdiv_q(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1fdiv_1q_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpz_ptr arg1 ;
+  mpz_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  arg2 = (mpz_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpz_fdiv_q_2exp(arg1,arg2,arg3);
 }
 
 
@@ -911,6 +1008,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1fdiv_1r(JNIEnv *jenv, 
   arg2 = (mpz_srcptr)(void*)jarg2; 
   arg3 = (mpz_srcptr)(void*)jarg3; 
   mpz_fdiv_r(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1fdiv_1r_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpz_ptr arg1 ;
+  mpz_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  arg2 = (mpz_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpz_fdiv_r_2exp(arg1,arg2,arg3);
 }
 
 
@@ -2243,6 +2354,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1div(JNIEnv *jenv, jcla
 }
 
 
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1div_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpq_ptr arg1 ;
+  mpq_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpq_div_2exp(arg1,arg2,arg3);
+}
+
+
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   jint jresult = 0 ;
   mpq_srcptr arg1 ;
@@ -2371,6 +2496,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1mul(JNIEnv *jenv, jcla
   arg2 = (mpq_srcptr)(void*)jarg2; 
   arg3 = (mpq_srcptr)(void*)jarg3; 
   mpq_mul(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1mul_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpq_ptr arg1 ;
+  mpq_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  arg2 = (mpq_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpq_mul_2exp(arg1,arg2,arg3);
 }
 
 
@@ -2859,6 +2998,32 @@ SWIGEXPORT jdouble JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1d_12exp(JNIEnv
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1default_1prec(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  mp_bitcnt_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (mp_bitcnt_t)mpf_get_default_prec();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1prec(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  mpf_srcptr arg1 ;
+  mp_bitcnt_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpf_srcptr)(void*)jarg1; 
+  result = (mp_bitcnt_t)mpf_get_prec(arg1);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1get_1si(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jint jresult = 0 ;
   mpf_srcptr arg1 ;
@@ -2973,6 +3138,18 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init(JNIEnv *jenv, jcl
   (void)jcls;
   arg1 = (mpf_ptr)(void*)jarg1; 
   mpf_init(arg1);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1init2(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  mpf_ptr arg1 ;
+  mp_bitcnt_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mp_bitcnt_t)jarg2; 
+  mpf_init2(arg1,arg2);
 }
 
 
@@ -3093,6 +3270,20 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1mul(JNIEnv *jenv, jcla
 }
 
 
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1mul_12exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  mpf_ptr arg1 ;
+  mpf_srcptr arg2 ;
+  mp_bitcnt_t arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mpf_srcptr)(void*)jarg2; 
+  arg3 = (mp_bitcnt_t)jarg3; 
+  mpf_mul_2exp(arg1,arg2,arg3);
+}
+
+
 SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
   mpf_ptr arg1 ;
   mpf_srcptr arg2 ;
@@ -3202,6 +3393,28 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1d(JNIEnv *jenv, j
   arg1 = (mpf_ptr)(void*)jarg1; 
   arg2 = (double)jarg2; 
   mpf_set_d(arg1,arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1default_1prec(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  mp_bitcnt_t arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mp_bitcnt_t)jarg1; 
+  mpf_set_default_prec(arg1);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1set_1prec(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  mpf_ptr arg1 ;
+  mp_bitcnt_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  arg2 = (mp_bitcnt_t)jarg2; 
+  mpf_set_prec(arg1,arg2);
 }
 
 
@@ -3391,6 +3604,76 @@ SWIGEXPORT void JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1ui_1sub(JNIEnv *jenv, 
   arg2 = (unsigned long)jarg2; 
   arg3 = (mpf_srcptr)(void*)jarg3; 
   mpf_ui_sub(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1sgn(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  mpz_ptr arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  result = (int)mpz_sgn(arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpq_1sgn(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  mpq_ptr arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpq_ptr)(void*)jarg1; 
+  result = (int)mpq_sgn(arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpf_1sgn(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  mpf_ptr arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpf_ptr)(void*)jarg1; 
+  result = (int)mpf_sgn(arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1odd_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  mpz_ptr arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  result = (int)mpz_odd_p(arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_gnu_gmp_swig_gmpJNI_mpz_1even_1p(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  mpz_ptr arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (mpz_ptr)(void*)jarg1; 
+  result = (int)mpz_even_p(arg1);
+  jresult = (jint)result; 
+  return jresult;
 }
 
 

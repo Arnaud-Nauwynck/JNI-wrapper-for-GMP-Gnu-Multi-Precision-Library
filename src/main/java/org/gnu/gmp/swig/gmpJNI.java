@@ -14,6 +14,7 @@ class gmpJNI {
   public final static native long mpq_alloc_init();
   public final static native void mpq_clear_free(long jarg1);
   public final static native long mpf_alloc_init();
+  public final static native long mpf_alloc_init2(long jarg1);
   public final static native void mpf_clear_free(long jarg1);
   public final static native void mpz_abs(long jarg1, long jarg2);
   public final static native void mpz_add(long jarg1, long jarg2, long jarg3);
@@ -25,10 +26,12 @@ class gmpJNI {
   public final static native void mpz_bin_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_bin_uiui(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_cdiv_q(long jarg1, long jarg2, long jarg3);
+  public final static native void mpz_cdiv_q_2exp(long jarg1, long jarg2, long jarg3);
   public final static native long mpz_cdiv_q_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_cdiv_qr(long jarg1, long jarg2, long jarg3, long jarg4);
   public final static native long mpz_cdiv_qr_ui(long jarg1, long jarg2, long jarg3, long jarg4);
   public final static native void mpz_cdiv_r(long jarg1, long jarg2, long jarg3);
+  public final static native void mpz_cdiv_r_2exp(long jarg1, long jarg2, long jarg3);
   public final static native long mpz_cdiv_r_ui(long jarg1, long jarg2, long jarg3);
   public final static native long mpz_cdiv_ui(long jarg1, long jarg2);
   public final static native void mpz_clear(long jarg1);
@@ -41,19 +44,23 @@ class gmpJNI {
   public final static native int mpz_cmpabs_ui(long jarg1, long jarg2);
   public final static native void mpz_com(long jarg1, long jarg2);
   public final static native int mpz_congruent_p(long jarg1, long jarg2, long jarg3);
+  public final static native int mpz_congruent_2exp_p(long jarg1, long jarg2, long jarg3);
   public final static native int mpz_congruent_ui_p(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_divexact(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_divexact_ui(long jarg1, long jarg2, long jarg3);
   public final static native int mpz_divisible_p(long jarg1, long jarg2);
   public final static native int mpz_divisible_ui_p(long jarg1, long jarg2);
+  public final static native int mpz_divisible_2exp_p(long jarg1, long jarg2);
   public final static native void mpz_dump(long jarg1);
   public final static native long mpz_export(long jarg1, long jarg2, int jarg3, long jarg4, int jarg5, long jarg6, long jarg7);
   public final static native void mpz_fac_ui(long jarg1, long jarg2);
   public final static native void mpz_fdiv_q(long jarg1, long jarg2, long jarg3);
+  public final static native void mpz_fdiv_q_2exp(long jarg1, long jarg2, long jarg3);
   public final static native long mpz_fdiv_q_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpz_fdiv_qr(long jarg1, long jarg2, long jarg3, long jarg4);
   public final static native long mpz_fdiv_qr_ui(long jarg1, long jarg2, long jarg3, long jarg4);
   public final static native void mpz_fdiv_r(long jarg1, long jarg2, long jarg3);
+  public final static native void mpz_fdiv_r_2exp(long jarg1, long jarg2, long jarg3);
   public final static native long mpz_fdiv_r_ui(long jarg1, long jarg2, long jarg3);
   public final static native long mpz_fdiv_ui(long jarg1, long jarg2);
   public final static native void mpz_fib_ui(long jarg1, long jarg2);
@@ -144,6 +151,7 @@ class gmpJNI {
   public final static native int _mpq_cmp_si(long jarg1, int jarg2, long jarg3);
   public final static native int _mpq_cmp_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpq_div(long jarg1, long jarg2, long jarg3);
+  public final static native void mpq_div_2exp(long jarg1, long jarg2, long jarg3);
   public final static native int mpq_equal(long jarg1, long jarg2);
   public final static native void mpq_get_num(long jarg1, long jarg2);
   public final static native void mpq_get_den(long jarg1, long jarg2);
@@ -153,6 +161,7 @@ class gmpJNI {
   public final static native long mpq_inp_str(long jarg1, long jarg2, int jarg3);
   public final static native void mpq_inv(long jarg1, long jarg2);
   public final static native void mpq_mul(long jarg1, long jarg2, long jarg3);
+  public final static native void mpq_mul_2exp(long jarg1, long jarg2, long jarg3);
   public final static native void mpq_neg(long jarg1, long jarg2);
   public final static native long mpq_out_str(long jarg1, int jarg2, long jarg3);
   public final static native void mpq_set(long jarg1, long jarg2);
@@ -187,11 +196,14 @@ class gmpJNI {
   public final static native void mpf_floor(long jarg1, long jarg2);
   public final static native double mpf_get_d(long jarg1);
   public final static native double mpf_get_d_2exp(int[] jarg1, long jarg2);
+  public final static native long mpf_get_default_prec();
+  public final static native long mpf_get_prec(long jarg1);
   public final static native int mpf_get_si(long jarg1);
   public final static native String mpf_get_str(String jarg1, int[] jarg2, int jarg3, long jarg4, long jarg5);
   public final static native String mpf_get_str2(int[] jarg1, int jarg2, long jarg3, long jarg4);
   public final static native long mpf_get_ui(long jarg1);
   public final static native void mpf_init(long jarg1);
+  public final static native void mpf_init2(long jarg1, long jarg2);
   public final static native void mpf_init_set(long jarg1, long jarg2);
   public final static native void mpf_init_set_d(long jarg1, double jarg2);
   public final static native void mpf_init_set_si(long jarg1, int jarg2);
@@ -200,6 +212,7 @@ class gmpJNI {
   public final static native long mpf_inp_str(long jarg1, long jarg2, int jarg3);
   public final static native int mpf_integer_p(long jarg1);
   public final static native void mpf_mul(long jarg1, long jarg2, long jarg3);
+  public final static native void mpf_mul_2exp(long jarg1, long jarg2, long jarg3);
   public final static native void mpf_mul_ui(long jarg1, long jarg2, long jarg3);
   public final static native void mpf_neg(long jarg1, long jarg2);
   public final static native long mpf_out_str(long jarg1, int jarg2, long jarg3, long jarg4);
@@ -208,6 +221,8 @@ class gmpJNI {
   public final static native void mpf_reldiff(long jarg1, long jarg2, long jarg3);
   public final static native void mpf_set(long jarg1, long jarg2);
   public final static native void mpf_set_d(long jarg1, double jarg2);
+  public final static native void mpf_set_default_prec(long jarg1);
+  public final static native void mpf_set_prec(long jarg1, long jarg2);
   public final static native void mpf_set_q(long jarg1, long jarg2);
   public final static native void mpf_set_si(long jarg1, int jarg2);
   public final static native int mpf_set_str(long jarg1, String jarg2, int jarg3);
@@ -222,4 +237,9 @@ class gmpJNI {
   public final static native void mpf_trunc(long jarg1, long jarg2);
   public final static native void mpf_ui_div(long jarg1, long jarg2, long jarg3);
   public final static native void mpf_ui_sub(long jarg1, long jarg2, long jarg3);
+  public final static native int mpz_sgn(long jarg1);
+  public final static native int mpq_sgn(long jarg1);
+  public final static native int mpf_sgn(long jarg1);
+  public final static native int mpz_odd_p(long jarg1);
+  public final static native int mpz_even_p(long jarg1);
 }

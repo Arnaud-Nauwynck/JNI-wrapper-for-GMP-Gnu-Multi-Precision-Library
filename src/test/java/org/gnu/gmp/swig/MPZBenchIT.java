@@ -2,13 +2,15 @@ package org.gnu.gmp.swig;
 
 import java.math.BigInteger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MPZBenchIT {
 
+	@Ignore
 	@Test
 	public void testSum() {
-		for (int repeat = 100000; repeat < 1000000; repeat += 100000) {
+		for (int repeat = 100000; repeat < 100000; repeat += 100000) {
 			long nanosBefore1 = System.nanoTime();
 			BigInteger bBig = BigInteger.valueOf(123456789).pow(100);
 			BigInteger bRes = BigInteger.valueOf(1);
@@ -36,9 +38,10 @@ public class MPZBenchIT {
 		}
 	}
 	
+	@Ignore
 	@Test
 	public void testMult() {
-		for (int repeat = 1000; repeat < 50000; repeat += 10000) {
+		for (int repeat = 1000; repeat < 5000; repeat += 10000) {
 			long nanosBefore1 = System.nanoTime();
 			BigInteger b123 = BigInteger.valueOf(123);
 			BigInteger bRes = BigInteger.valueOf(1);

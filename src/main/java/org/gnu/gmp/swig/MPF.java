@@ -15,16 +15,21 @@ public class MPF {
 	
 	// ------------------------------------------------------------------------
 	
+	/** constructor using default precision */
 	public MPF() {
 		 long addr = gmp.mpf_alloc_init();
 		 ptr = new SWIGTYPE_p_mpf_ptr(addr, true);
-		 // System.out.println("wrap new mpf:" + addr);
 	}
 
-	public MPF(double value, int precision) {
-		 this();
-		 // TODO set_prec();
-		 set_d(value);
+	public MPF(long precision) {
+		 long addr = gmp.mpf_alloc_init2(precision);
+		 ptr = new SWIGTYPE_p_mpf_ptr(addr, true);
+	}
+
+	public static MPF valueOf(double value, long precision) {
+		MPF res = new MPF(precision);
+		res.set_d(value);
+		return res;
 	}
 
 	// ------------------------------------------------------------------------
@@ -58,8 +63,31 @@ public class MPF {
 			throw new IllegalArgumentException("negative value instead of wrapped jni 'unsigned long'");
 		}
 	}
+
 	// ------------------------------------------------------------------------
 	
+	public static void set_default_prec(long prec) {
+		gmp.mpf_set_default_prec(prec);
+	}
+	
+	public static long get_default_prec() {
+		return gmp.mpf_get_default_prec();
+	}
+	
+	// ------------------------------------------------------------------------
+	
+	public long get_prec() {
+		return gmp.mpf_get_prec(ptr);
+	}
+
+	public void set_prec(long prec) {
+		gmp.mpf_set_prec(ptr, prec);
+	}
+	
+	public int get_sgn() {
+		return gmp.mpf_sgn(ptr);
+	}
+
 	public void set_abs(MPF src) {
 		gmp.mpf_abs(ptr, src.ptr);
 	}
@@ -172,6 +200,10 @@ public class MPF {
 
 	public void set_mul(MPF left, MPF right) {
 		gmp.mpf_mul(ptr, left.ptr, right.ptr);
+	}
+
+	public void set_mul_2exp (MPF left, long exp) {
+		gmp.mpf_mul_2exp(ptr, left.ptr, exp);
 	}
 
 	public void set_mul_ui(MPF left, long right) {

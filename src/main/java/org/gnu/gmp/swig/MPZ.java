@@ -70,6 +70,10 @@ public class MPZ {
 		gmp.mpz_set_si(ptr, value);
 	}
 
+	public int get_sgn() {
+		return gmp.mpz_sgn(ptr);
+	}
+
 	public void set_abs(MPZ src) {
 		gmp.mpz_abs(ptr, src.ptr);
 	}
@@ -117,7 +121,10 @@ public class MPZ {
 		gmp.mpz_cdiv_q(ptr, n.ptr, d.ptr);
 	}
 	
-	// public void cdiv_q_2exp(MPZ left, mp_bitcnt_t);
+	public void set_cdiv_q_2exp(MPZ n, long dexp) {
+		checkPositiveArg(dexp);
+		gmp.mpz_cdiv_q_2exp(ptr, n.ptr, dexp);
+	}
 	
 	public long set_cdiv_q_ui(MPZ n, long d) {
 		checkPositiveArg(d);
@@ -137,7 +144,10 @@ public class MPZ {
 		gmp.mpz_cdiv_r(ptr, n.ptr, d.ptr);
 	} 
 	
-	// public void cdiv_r_2exp(MPZ left, mp_bitcnt_t);
+	public void set_cdiv_r_2exp(MPZ n, long dexp) {
+		checkPositiveArg(dexp);
+		gmp.mpz_cdiv_r_2exp(ptr, n.ptr, dexp);
+	}
 	
 	public long get_cdiv_r_ui(MPZ r, long d) {
 		checkPositiveArg(d);
@@ -189,12 +199,14 @@ public class MPZ {
 	
 	// public void combit(mp_bitcnt_t);
 	
-	public boolean isCongruent_p(MPZ c, MPZ d) {
+	public boolean isCongruent_p(MPZ c, MPZ d) { // TODO return int??
 		return 0 != gmp.mpz_congruent_p(ptr, c.ptr, d.ptr);
 	}
 	
-	// boolean isCongruent_2exp_p (MPZ left, mpz_srcptr, mp_bitcnt_t) {
-	// }
+	public boolean isCongruent_2exp_p(MPZ c, long dexp) {  // TODO return int??
+		checkPositiveArg(dexp);
+		return 0 != gmp.mpz_congruent_2exp_p(ptr, c.ptr, dexp);
+	}
 	
 	public boolean isCongruent_ui_p(long c, long d) {
 		return 0 != gmp.mpz_congruent_ui_p(ptr, c, d);
@@ -218,7 +230,10 @@ public class MPZ {
 		return 0 != gmp.mpz_divisible_ui_p(ptr, d);
 	}
 	
-	// boolean isDivisible_2exp_p (MPZ left, mp_bitcnt_t);
+	public boolean isDivisible_2exp_p(long dexp) {
+		checkPositiveArg(dexp);
+		return 0 != gmp.mpz_divisible_2exp_p(ptr, dexp);
+	}
 	
 	// TODO??  public void dump (MPZ src);
 	
@@ -239,7 +254,10 @@ public class MPZ {
 		gmp.mpz_fdiv_q(ptr, n.ptr, d.ptr);
 	}
 	
-	// public void fdiv_q_2exp(MPZ left, mp_bitcnt_t);
+	public void set_fdiv_q_2exp(MPZ n, long dexp) {
+		checkPositiveArg(dexp);
+		gmp.mpz_fdiv_q_2exp(ptr, n.ptr, dexp);
+	}
 	
 	public long set_fdiv_q_ui(MPZ n, long d) { // TOCHECK?? return
 		checkPositiveArg(d);
@@ -259,7 +277,10 @@ public class MPZ {
 		gmp.mpz_fdiv_r(ptr, n.ptr, d.ptr);
 	}
 	
-	// public void fdiv_r_2exp(MPZ left, mp_bitcnt_t);
+	public void set_fdiv_r_2exp(MPZ n, long dexp) {
+		checkPositiveArg(dexp);
+		gmp.mpz_fdiv_r_2exp(ptr, n.ptr, dexp);
+	}
 	
 	public long set_fdiv_r_ui(MPZ n, long d) {
 		checkPositiveArg(d);
@@ -733,7 +754,13 @@ op2 is zero.
 	public void set_xor(MPZ op1, MPZ op2) {
 		gmp.mpz_xor(ptr, op1.ptr, op2.ptr);
 	}
+
+	public boolean is_odd() {
+		return 0 != gmp.mpz_odd_p(ptr);
+	}
 	
-	
+	public boolean is_even() {
+		return 0 != gmp.mpz_even_p(ptr);
+	}
 
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 public class MPQTest {
 
 	private static MPQ MPQ_1_2 = new MPQ(1, 2);
+	private static MPQ MPQ_0 = new MPQ(0, 1);
 	private static MPQ MPQ_minus1_2 = new MPQ(-1, 2);
 	private static MPQ MPQ_1_3 = new MPQ(1, 3);
 
@@ -118,6 +119,13 @@ public class MPQTest {
 		res.dispose();
 	}
 
+	@Test
+	public void testGet_sgn() {
+		Assert.assertEquals(-1, MPQ_minus1_2.get_sgn());
+		Assert.assertEquals(0, MPQ_0.get_sgn());
+		Assert.assertEquals(+1, MPQ_1_2.get_sgn());
+	}
+	
 	@Test
 	public void testSet_abs() {
 		MPQ res = new MPQ();
@@ -249,6 +257,15 @@ public class MPQTest {
 	}
 
 	@Test
+	public void testSet_div_2exp() {
+		MPQ res = new MPQ();
+		res.set_div_2exp(MPQ_1_2, 2); // (1/2) / 2**2 = 1/8
+		assertEquals(1, 8, res);
+		dispose(res);
+	}
+
+	
+	@Test
 	public void testEqual() {
 		MPQ res = new MPQ(1, 3);
 		MPQ other = new MPQ(1, 3);
@@ -307,6 +324,15 @@ public class MPQTest {
 		dispose(res);
 	}
 
+	@Test
+	public void testSet_mul_2exp() {
+		MPQ res = new MPQ();
+		res.set_mul_2exp(MPQ_1_2, 2); // (1/2) * 2**2 = 2
+		assertEquals(2, 1, res);
+		dispose(res);
+	}
+
+	
 	@Test
 	public void testSet_inv() {
 		MPQ res = new MPQ();

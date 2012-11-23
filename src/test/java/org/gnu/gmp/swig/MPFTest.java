@@ -8,9 +8,11 @@ import org.junit.Test;
  */
 public class MPFTest {
 
-	private static MPF MPF_1_1 = new MPF(1.1, 4);
-	private static MPF MPF_1_234 = new MPF(1.234, 4);
-	private static MPF MPF_1_5 = new MPF(1.5, 4);
+	private static MPF MPF_0 = MPF.valueOf(0, 1);
+	private static MPF MPF_1_1 = MPF.valueOf(1.1, 4);
+	private static MPF MPF_1_234 = MPF.valueOf(1.234, 4);
+	private static MPF MPF_minus_1_234 = MPF.valueOf(-1.234, 4);
+	private static MPF MPF_1_5 = MPF.valueOf(1.5, 4);
 
 	private static void assertEquals(double expected, MPF actual) {
 		assertEquals(expected, actual, 1e-6);
@@ -27,6 +29,47 @@ public class MPFTest {
 	private static void dispose(MPF arg1, MPF arg2) {
 		arg1.dispose();
 		arg2.dispose();
+	}
+
+	@Test
+	public void testSet_default_prec() {
+		long old = MPF.get_default_prec(); // default = 64 on cpu with 64 bits
+		try {
+			MPF.set_default_prec(65); // set "at least" .. not exactly => round ceil to 128=2*64 !!
+			Assert.assertEquals(128, MPF.get_default_prec());
+		} finally {
+			MPF.set_default_prec(old);
+		}
+	}
+	
+	@Test
+	public void testGet_default_prec() {
+		long prec = MPF.get_default_prec();
+		Assert.assertTrue(prec > 10);
+	}
+
+	@Test
+	public void testGet_prec() {
+		MPF res = MPF.valueOf(1.0, 64+1); // => precision "at least" 65.. ceil to 128!
+		Assert.assertEquals(128, res.get_prec());
+		dispose(res);
+	}
+
+	@Test
+	public void testSet_prec() {
+		MPF res = MPF.valueOf(1.0, 65);
+		Assert.assertEquals(128, res.get_prec());
+		res.set_prec(63);
+		Assert.assertEquals(64, res.get_prec());
+		dispose(res);
+	}
+
+	
+	@Test
+	public void testGet_sgn() {
+		Assert.assertEquals(-1, MPF_minus_1_234.get_sgn());
+		Assert.assertEquals(0, MPF_0.get_sgn());
+		Assert.assertEquals(+1, MPF_1_234.get_sgn());
 	}
 
 	@Test
@@ -233,6 +276,14 @@ public class MPFTest {
 		dispose(res);
 	}
 
+	@Test
+	public void testSet_mul_2exp() {
+		MPF res = new MPF();
+		res.set_mul_2exp(MPF_1_5, 2);
+		assertEquals(1.5 * 2*2, res);
+		dispose(res);
+	}
+		
 	@Test
 	public void testSet_mul_ui() {
 		MPF res = new MPF();

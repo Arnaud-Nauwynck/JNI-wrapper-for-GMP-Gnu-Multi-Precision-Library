@@ -1,9 +1,11 @@
 package org.gnu.gmp.swig;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class FibBenchIT {
 
+	@Ignore
 	@Test
 	public void testBenchFib() {
 		long nanosBefore = System.nanoTime();

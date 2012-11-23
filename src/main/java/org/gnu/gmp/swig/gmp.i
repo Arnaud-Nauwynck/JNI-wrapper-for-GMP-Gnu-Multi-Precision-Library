@@ -83,6 +83,13 @@ jlong mpf_alloc_init() {
 	return ret;
 }
 
+jlong mpf_alloc_init2(mp_bitcnt_t prec) {
+	mpf_ptr addr = (mpf_ptr) malloc(sizeof(mpf_t));
+	jlong ret = (jlong) ((void*) addr);
+	mpf_init2(addr, prec);
+	return ret;
+}
+
 void mpf_clear_free(jlong addr) {
 	mpf_ptr ptr = (mpf_ptr)addr;
 	mpf_clear(ptr);
@@ -100,6 +107,7 @@ jlong mpq_alloc_init();
 void mpq_clear_free(jlong);
 
 jlong mpf_alloc_init();
+jlong mpf_alloc_init2(mp_bitcnt_t);
 void mpf_clear_free(jlong);
 
 
@@ -132,7 +140,7 @@ void mpz_bin_uiui (mpz_ptr, unsigned long int, unsigned long int);
 void mpz_cdiv_q (mpz_ptr, mpz_srcptr, mpz_srcptr);
 
 
-// void mpz_cdiv_q_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
+void mpz_cdiv_q_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
 
 unsigned long int mpz_cdiv_q_ui (mpz_ptr, mpz_srcptr, unsigned long int);
 
@@ -142,7 +150,7 @@ unsigned long int mpz_cdiv_qr_ui (mpz_ptr, mpz_ptr, mpz_srcptr, unsigned long in
 
 void mpz_cdiv_r (mpz_ptr, mpz_srcptr, mpz_srcptr);
 
-// void mpz_cdiv_r_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
+void mpz_cdiv_r_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
 
 unsigned long int mpz_cdiv_r_ui (mpz_ptr, mpz_srcptr, unsigned long int);
 
@@ -174,7 +182,7 @@ void mpz_com (mpz_ptr, mpz_srcptr);
 
 int mpz_congruent_p (mpz_srcptr, mpz_srcptr, mpz_srcptr);
 
-// int mpz_congruent_2exp_p (mpz_srcptr, mpz_srcptr, mp_bitcnt_t);
+int mpz_congruent_2exp_p (mpz_srcptr, mpz_srcptr, mp_bitcnt_t);
 
 int mpz_congruent_ui_p (mpz_srcptr, unsigned long, unsigned long);
 
@@ -186,7 +194,7 @@ int mpz_divisible_p (mpz_srcptr, mpz_srcptr);
 
 int mpz_divisible_ui_p (mpz_srcptr, unsigned long);
 
-// int mpz_divisible_2exp_p (mpz_srcptr, mp_bitcnt_t);
+int mpz_divisible_2exp_p (mpz_srcptr, mp_bitcnt_t);
 
 void mpz_dump (mpz_srcptr);
 
@@ -202,7 +210,7 @@ void mpz_fac_ui (mpz_ptr, unsigned long int);
 
 void mpz_fdiv_q (mpz_ptr, mpz_srcptr, mpz_srcptr);
 
-// void mpz_fdiv_q_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
+void mpz_fdiv_q_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
 
 unsigned long int mpz_fdiv_q_ui (mpz_ptr, mpz_srcptr, unsigned long int);
 
@@ -212,7 +220,7 @@ unsigned long int mpz_fdiv_qr_ui (mpz_ptr, mpz_ptr, mpz_srcptr, unsigned long in
 
 void mpz_fdiv_r (mpz_ptr, mpz_srcptr, mpz_srcptr);
 
-// void mpz_fdiv_r_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
+void mpz_fdiv_r_2exp (mpz_ptr, mpz_srcptr, mp_bitcnt_t);
 
 unsigned long int mpz_fdiv_r_ui (mpz_ptr, mpz_srcptr, unsigned long int);
 
@@ -440,7 +448,7 @@ int _mpq_cmp_ui (mpq_srcptr, unsigned long int, unsigned long int);
 
 void mpq_div (mpq_ptr, mpq_srcptr, mpq_srcptr);
 
-// void mpq_div_2exp (mpq_ptr, mpq_srcptr, mp_bitcnt_t);
+void mpq_div_2exp (mpq_ptr, mpq_srcptr, mp_bitcnt_t);
 
 int mpq_equal (mpq_srcptr, mpq_srcptr);
 
@@ -462,7 +470,7 @@ void mpq_inv (mpq_ptr, mpq_srcptr);
 
 void mpq_mul (mpq_ptr, mpq_srcptr, mpq_srcptr);
 
-// void mpq_mul_2exp (mpq_ptr, mpq_srcptr, mp_bitcnt_t);
+void mpq_mul_2exp (mpq_ptr, mpq_srcptr, mp_bitcnt_t);
 
 void mpq_neg (mpq_ptr, mpq_srcptr);
 
@@ -541,9 +549,9 @@ double mpf_get_d (mpf_srcptr);
 
 double mpf_get_d_2exp (signed long int* OUTPUT, mpf_srcptr);
 
-// mp_bitcnt_t mpf_get_default_prec (void);
+mp_bitcnt_t mpf_get_default_prec (void);
 
-// mp_bitcnt_t mpf_get_prec (mpf_srcptr);
+mp_bitcnt_t mpf_get_prec (mpf_srcptr);
 
 long mpf_get_si (mpf_srcptr);
 
@@ -563,7 +571,7 @@ unsigned long mpf_get_ui (mpf_srcptr);
 
 void mpf_init (mpf_ptr);
 
-// void mpf_init2 (mpf_ptr, mp_bitcnt_t);
+void mpf_init2 (mpf_ptr, mp_bitcnt_t);
 
 // void mpf_inits (mpf_ptr, ...);
 
@@ -583,7 +591,7 @@ int mpf_integer_p (mpf_srcptr);
 
 void mpf_mul (mpf_ptr, mpf_srcptr, mpf_srcptr);
 
-// void mpf_mul_2exp (mpf_ptr, mpf_srcptr, mp_bitcnt_t);
+void mpf_mul_2exp (mpf_ptr, mpf_srcptr, mp_bitcnt_t);
 
 void mpf_mul_ui (mpf_ptr, mpf_srcptr, unsigned long int);
 
@@ -601,11 +609,12 @@ void mpf_set (mpf_ptr, mpf_srcptr);
 
 void mpf_set_d (mpf_ptr, double);
 
-// void mpf_set_default_prec (mp_bitcnt_t);
+void mpf_set_default_prec (mp_bitcnt_t);
 
-// void mpf_set_prec (mpf_ptr, mp_bitcnt_t);
+void mpf_set_prec (mpf_ptr, mp_bitcnt_t);
 
-// void mpf_set_prec_raw (mpf_ptr, mp_bitcnt_t);
+// void mpf_set_prec_raw (mpf_ptr, mp_bitcnt_t);  ... not mapped in JNI: unsafe
+//  ... Before calling mpf_clear or the full mpf_set_prec, another mpf_set_prec_raw call must be made to restore rop to its original allocated precision. Failing to do so will have unpredictable results.
 
 void mpf_set_q (mpf_ptr, mpq_srcptr);
 
@@ -639,3 +648,11 @@ void mpf_ui_sub (mpf_ptr, unsigned long int, mpf_srcptr);
 
 
 
+
+// ************ mpz,mpq,mpf functions inlined in gmp.h *********
+int mpz_sgn(mpz_ptr);
+int mpq_sgn(mpq_ptr);
+int mpf_sgn(mpf_ptr);
+
+int mpz_odd_p(mpz_ptr);
+int mpz_even_p(mpz_ptr);

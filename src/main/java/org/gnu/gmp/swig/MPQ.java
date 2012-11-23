@@ -63,6 +63,10 @@ public class MPQ {
 	}
 	// ------------------------------------------------------------------------
 	
+	public int get_sgn() {
+		return gmp.mpq_sgn(ptr);
+	}
+
 	public void set_abs(MPQ src) {
 		gmp.mpq_abs(ptr, src.ptr);
 	}
@@ -91,6 +95,11 @@ public class MPQ {
 		gmp.mpq_div(ptr, left.ptr, right.ptr);
 	}
 
+	public void set_div_2exp (MPQ left, long rightexp) {
+		gmp.mpq_div_2exp(ptr, left.ptr, rightexp);
+	}
+
+	
 	public boolean equal(MPQ src) {
 		return 0 != gmp.mpq_equal(ptr, src.ptr);
 	}
@@ -128,6 +137,12 @@ public class MPQ {
 		gmp.mpq_mul(ptr, left.ptr, right.ptr);
 	}
 
+	public void set_mul_2exp(MPQ left, long rightexp) {
+		checkPositiveArg(rightexp);
+		gmp.mpq_mul_2exp(ptr, left.ptr, rightexp);
+	}
+
+	
 	public void set_neg(MPQ src) {
 		gmp.mpq_neg(ptr, src.ptr);
 	}
